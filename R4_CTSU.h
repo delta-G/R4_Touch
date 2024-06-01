@@ -24,6 +24,27 @@ R4_CTSU.h  --  Capacitive Touch Sensing for Arduino UNO-R4
 #ifndef R4_CTSU_H
 #define R4_CTSU_H
 
+#if !defined(ARDUINO_UNOR4_WIFI) && !defined(ARDUINO_UNOR4_MINIMA)
+#error Sorry, this library only works on the Arduino UNO-R4 Minima and Arduino UNO-R4 WiFi
+#endif
+
+#define NUM_CTSU_SENSORS 6
+
+#include "Arduino.h"
+#include "EventLinkInterrupt.h"
+
+struct CTSU_pin_info_t {
+  uint8_t port;
+  uint8_t pin;
+  uint8_t ts_num;
+  uint8_t chac_idx;
+  uint8_t chac_val;
+};
+
+
+
+void setupCTSU();
+void startCTSUmeasure();
 
 
 
