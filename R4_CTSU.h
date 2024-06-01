@@ -32,6 +32,7 @@ R4_CTSU.h  --  Capacitive Touch Sensing for Arduino UNO-R4
 
 #include "Arduino.h"
 #include "EventLinkInterrupt.h"
+#include "r_dtc.h"
 
 struct CTSU_pin_info_t {
   uint8_t port;
@@ -42,8 +43,8 @@ struct CTSU_pin_info_t {
 };
 
 
-
 void setupCTSU();
+void setupDTC();
 void startCTSUmeasure();
 
 
