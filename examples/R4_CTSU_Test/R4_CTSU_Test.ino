@@ -7,7 +7,15 @@ uint16_t results[NUM_CTSU_SENSORS + 2][2];
 bool fn_fired = false;
 bool wr_fired = false;
 
+uint8_t outPins[] = {4, 5, 6, 7, 11, 12};
+
 void setup() {
+  for (int i=0; i<NUM_CTSU_SENSORS; i++){
+    pinMode(outPins[i], OUTPUT);
+    digitalWrite(outPins[i], HIGH);
+    delay(250);
+    digitalWrite(outPins[i], LOW);
+  }
 
   Serial.begin(115200);
   while (!Serial)
@@ -20,6 +28,14 @@ void setup() {
 }
 
 void loop() {
+
+  for(int i=0; i<NUM_CTSU_SENSORS; i++){
+    if(results[i][0] - results[i][1] > 18000){
+      digitalWrite(outPins[i], HIGH);
+    } else {
+      digitalWrite(outPins[i], LOW);
+    }
+  }
 
   static unsigned long lastTime = millis();
   unsigned long currentTime = millis();
