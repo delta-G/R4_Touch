@@ -1,4 +1,4 @@
-#include "R4_CTSU.h"
+#include "R4_Touch.h"
 
 // an array for the results
 // With extra space to make sure we aren't corrupting data after it

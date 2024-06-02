@@ -1,12 +1,10 @@
-#include "EventLinkInterrupt.h"
-#include "r_transfer_api.h"
+
+
+#include "R4_Touch.h"
 /*
 
 R4_CTSU.cpp  --  Capacitive Touch Sensing for Arduino UNO-R4
      Copyright (C) 2023  David C.
-
-     Inlcudes code that was contributed to the LoveButton library 
-     by Winnie S.
 
      This program is free software: you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published by
@@ -66,7 +64,6 @@ It goes back to 1 automatically until it ends
 
 */
 
-#include "R4_CTSU.h"
 
 CTSU_pin_info_t pins[NUM_CTSU_SENSORS] = {
   { 1, 5, 34, 4, (1 << 2) },

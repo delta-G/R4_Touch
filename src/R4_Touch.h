@@ -3,9 +3,6 @@
 R4_CTSU.h  --  Capacitive Touch Sensing for Arduino UNO-R4
      Copyright (C) 2023  David C.
 
-     Inlcudes code that was contributed to the LoveButton library 
-     by Winnie S.
-
      This program is free software: you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published by
      the Free Software Foundation, either version 3 of the License, or
@@ -21,8 +18,8 @@ R4_CTSU.h  --  Capacitive Touch Sensing for Arduino UNO-R4
 
      */
 
-#ifndef R4_CTSU_H
-#define R4_CTSU_H
+#ifndef R4_TOUCH_H
+#define R4_TOUCH_H
 
 #if !defined(ARDUINO_UNOR4_WIFI) && !defined(ARDUINO_UNOR4_MINIMA)
 #error Sorry, this library only works on the Arduino UNO-R4 Minima and Arduino UNO-R4 WiFi
@@ -50,4 +47,4 @@ void startCTSUmeasure();
 
 
 
-#endif //R4_CTSU_H
+#endif //R4_TOUCH_H
