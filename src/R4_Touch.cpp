@@ -63,28 +63,31 @@ It goes back to 1 automatically until it ends
 #define NUM_ARDUINO_PINS 21
 #define NUM_CTSU_PINS 11
 
+#define LOVE_PORT 2
+#define LOVE_PIN 4 //Love is on P204
+
 const ctsu_pin_info_t g_ctsu_pin_info[NUM_ARDUINO_PINS] = {
-    {9, 1, (1 << 1)},  //  0
-    {8, 1, (1 << 0)},  //  1
-    {34, 4, (1 << 2)}, //  2
-    {13, 1, (1 << 5)}, //  3
-    {NOT_A_TOUCH_PIN, 0, 0},        //  4
-    {NOT_A_TOUCH_PIN, 0, 0},        //  5
-    {NOT_A_TOUCH_PIN, 0, 0},        //  6
-    {NOT_A_TOUCH_PIN, 0, 0},        //  7
-    {11, 1, (1 << 3)}, //  8
-    {2, 0, (1 << 2)},  //  9
-    {NOT_A_TOUCH_PIN, 0, 0},        //  10
-    {10, 1, (1 << 2)}, //  11
-    {NOT_A_TOUCH_PIN, 0, 0},        //  12
-    {12, 1, (1 << 4)}, //  13
-    {NOT_A_TOUCH_PIN, 0, 0},        //  14 - A0
-    {21, 2, (1 << 5)}, //  15 - A1
-    {22, 2, (1 << 6)}, //  16 - A2
-    {NOT_A_TOUCH_PIN, 0, 0},        //  17 - A3
-    {NOT_A_TOUCH_PIN, 0, 0},        //  18 - A4
-    {NOT_A_TOUCH_PIN, 0, 0},        //  19 - A5
-    {0, 0, (1 << 0)},  //  LOVE
+    {9, 1, (1 << 1)},        //  0
+    {8, 1, (1 << 0)},        //  1
+    {34, 4, (1 << 2)},       //  2
+    {13, 1, (1 << 5)},       //  3
+    {NOT_A_TOUCH_PIN, 0, 0}, //  4
+    {NOT_A_TOUCH_PIN, 0, 0}, //  5
+    {NOT_A_TOUCH_PIN, 0, 0}, //  6
+    {NOT_A_TOUCH_PIN, 0, 0}, //  7
+    {11, 1, (1 << 3)},       //  8
+    {2, 0, (1 << 2)},        //  9
+    {NOT_A_TOUCH_PIN, 0, 0}, //  10
+    {10, 1, (1 << 2)},       //  11
+    {NOT_A_TOUCH_PIN, 0, 0}, //  12
+    {12, 1, (1 << 4)},       //  13
+    {NOT_A_TOUCH_PIN, 0, 0}, //  14 - A0
+    {21, 2, (1 << 5)},       //  15 - A1
+    {22, 2, (1 << 6)},       //  16 - A2
+    {NOT_A_TOUCH_PIN, 0, 0}, //  17 - A3
+    {NOT_A_TOUCH_PIN, 0, 0}, //  18 - A4
+    {NOT_A_TOUCH_PIN, 0, 0}, //  19 - A5
+    {0, 0, (1 << 0)},        //  LOVE
 };
 #endif
 
@@ -158,36 +161,52 @@ void setTouchMode(int pin)
     // pin is not supported
     return;
   }
-  if (pinToDataIndex[pin] != NOT_A_TOUCH_PIN){
+  if (pinToDataIndex[pin] != NOT_A_TOUCH_PIN)
+  {
     // pin is already configured.
     return;
   }
   // stop CTSU if it is running
   R_CTSU->CTSUCR0 = 0;
   // set pin PFS setting
-  R_IOPORT_PinCfg(&g_ioport_ctrl, g_pin_cfg[pin].pin, (uint32_t)(IOPORT_CFG_PERIPHERAL_PIN | IOPORT_PERIPHERAL_CTSU));
+  if (pin == NUM_ARDUINO_PINS - 1)
+  {
+    // LOVE pin isn't defined in the core
+    R_PFS->PORT[LOVE_PORT].PIN[LOVE_PIN].PmnPFS = (1 << R_PFS_PORT_PIN_PmnPFS_PMR_Pos) | (12 << R_PFS_PORT_PIN_PmnPFS_PSEL_Pos);     
+  }
+  else
+  {
+    R_IOPORT_PinCfg(&g_ioport_ctrl, g_pin_cfg[pin].pin, (uint32_t)(IOPORT_CFG_PERIPHERAL_PIN | IOPORT_PERIPHERAL_CTSU));
+  }
 
-  setupCTSU(); 
+  setupCTSU();
 
   // add to the list of enabled pins
   R_CTSU->CTSUCHAC[info->chac_idx] |= info->chac_val;
 
   // figure out the index in the data array for this pin
   int di = 0;
-  for (int i = num_configured_sensors; i>0; i--){
-    if(dataIndexToTS[i-1] < info->ts_num){
+  for (int i = num_configured_sensors; i > 0; i--)
+  {
+    if (dataIndexToTS[i - 1] < info->ts_num)
+    {
       di = i;
       break;
-    } else {
+    }
+    else
+    {
       // shift the array over one space
-      dataIndexToTS[i] = dataIndexToTS[i-1];
-      memcpy(&(regSettings[0][0]) + (3 * i), &(regSettings[0][0]) + (3 * (i-1)),  6);      
+      dataIndexToTS[i] = dataIndexToTS[i - 1];
+      memcpy(&(regSettings[0][0]) + (3 * i), &(regSettings[0][0]) + (3 * (i - 1)), 6);
     }
   }
   // fix the other pin indexes
-  if(di < num_configured_sensors){
-    for (int i=0; i<NUM_ARDUINO_PINS; i++){
-      if((pinToDataIndex[i] != 255) && pinToDataIndex[i] >= di){
+  if (di < num_configured_sensors)
+  {
+    for (int i = 0; i < NUM_ARDUINO_PINS; i++)
+    {
+      if ((pinToDataIndex[i] != 255) && pinToDataIndex[i] >= di)
+      {
         pinToDataIndex[i]++;
       }
     }
@@ -200,13 +219,14 @@ void setTouchMode(int pin)
   num_configured_sensors++;
 }
 
-uint16_t touchRead(int pin){
-  if(pinToDataIndex[pin] == NOT_A_TOUCH_PIN){
+uint16_t touchRead(int pin)
+{
+  if (pinToDataIndex[pin] == NOT_A_TOUCH_PIN)
+  {
     return 0;
   }
   return results[pinToDataIndex[pin]][0] - results[pinToDataIndex[pin]][1];
 }
-
 
 void setupCTSU()
 {
@@ -304,7 +324,7 @@ void setupDTC()
 
   wr_info.p_dest = (void *)&(R_CTSU->CTSUSSC); // pointer to where data should go to
   wr_info.p_src = &(regSettings[0][0]);        // pointer to where data should come from
-  wr_info.num_blocks = 1;       // unused in normal mode - number of repeats in repeat mode - number of blocks in block mode
+  wr_info.num_blocks = 1;                      // unused in normal mode - number of repeats in repeat mode - number of blocks in block mode
   wr_info.length = 3;                          // number of transfers to make in normal mode - size of repeat area in repeat mode - size of block in block mode
 
   /*
@@ -331,7 +351,7 @@ void setupDTC()
 
   rd_info.p_dest = &(results[0][0]);         // pointer to where data should go to
   rd_info.p_src = (void *)&(R_CTSU->CTSUSC); // pointer to where data should come from
-  rd_info.num_blocks = 1;     // unused in normal mode - number of repeats in repeat mode - number of blocks in block mode
+  rd_info.num_blocks = 1;                    // unused in normal mode - number of repeats in repeat mode - number of blocks in block mode
   rd_info.length = 2;                        // number of transfers to make in normal mode - size of repeat area in repeat mode - size of block in block mode
 
   R_DTC_Open(&wr_ctrl, &wr_cfg);
