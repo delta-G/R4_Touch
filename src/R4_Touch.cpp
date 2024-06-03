@@ -155,6 +155,11 @@ void setTouchMode(int pin)
   const ctsu_pin_info_t *info = &(g_ctsu_pin_info[pin]);
   if (info->ts_num == NOT_A_TOUCH_PIN)
   {
+    // pin is not supported
+    return;
+  }
+  if (pinToDataIndex[pin] != NOT_A_TOUCH_PIN){
+    // pin is already configured.
     return;
   }
   // stop CTSU if it is running
