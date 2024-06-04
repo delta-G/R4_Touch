@@ -246,7 +246,7 @@ void setTouchMode(int pin)
     }
   }
   dataIndexToTS[di] = info->ts_num;
-  regSettings[di][0] = 0;
+  regSettings[di][0] = 0x0200;
   regSettings[di][1] = 0;
   regSettings[di][2] = 0x0F00;
   pinToDataIndex[pin] = di;
@@ -299,7 +299,7 @@ void setupCTSU()
     delay(100);
 
     // setup other registers:
-    R_CTSU->CTSUSDPRS = 0x63; // recommended settings with noise reduction off
+    R_CTSU->CTSUSDPRS = 0x23; // recommended settings with noise reduction on
     R_CTSU->CTSUSST = 0x10;   // data sheet says set value to this only
     // R_CTSU->CTSUCHAC[pins[0].chac_idx] = pins[0].chac_val;  // enable pin TS00 for measurement
     R_CTSU->CTSUDCLKC = 0x30; // data sheet dictates these settings.
