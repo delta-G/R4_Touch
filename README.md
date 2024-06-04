@@ -14,9 +14,9 @@ Touch pads should be connected directly to the pins with wires.  Be careful wher
 
 # Supported Pins
 
-Not all pins on the R4 support capacitive sensing.
-On the Minima the supported pins are 0, 1, 2, 3, 8, 9, 11, 13, A1, A2
-On the WiFi the supported pins are 0, 1, 2, 3, 6, 8, 9, 11, 12, A1, A2
+Not all pins on the R4 support capacitive sensing.<br>
+On the Minima the supported pins are 0, 1, 2, 3, 8, 9, 11, 13, A1, A2<br>
+On the WiFi the supported pins are 0, 1, 2, 3, 6, 8, 9, 11, 12, A1, A2<br>
 On both boards the LOVE pin is also supported.  To use the LOVE pin, pass 20 for the pin number. 
 
 # Code
