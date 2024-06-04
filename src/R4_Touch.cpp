@@ -140,7 +140,7 @@ uint16_t regSettings[NUM_CTSU_PINS][3];
 
 int num_configured_sensors = 0;
 bool free_running = true;
-bool ctsu_done = true;
+volatile bool ctsu_done = true;
 
 dtc_instance_ctrl_t wr_ctrl;
 transfer_info_t wr_info;
@@ -183,7 +183,8 @@ void CTSUFN_handler()
   }
 }
 
-bool touchMeasurementReady() {
+bool touchMeasurementReady()
+{
   return (free_running || ctsu_done);
 }
 
@@ -415,4 +416,21 @@ void TouchSensor::begin()
 bool TouchSensor::read()
 {
   return (touchRead(_pin) > _threshold);
+}
+
+uint16_t TouchSensor::readRaw()
+{
+  return touchRead(_pin);
+}
+
+void TouchSensor::start()
+{
+  startTouchMeasurement();
+}
+
+void TouchSensor::startSingle()
+{
+  startTouchMeasurement(false);
+  while (!touchMeasurementReady())
+    ;
 }

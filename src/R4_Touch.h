@@ -31,12 +31,12 @@ R4_CTSU.h  --  Capacitive Touch Sensing for Arduino UNO-R4
 
 #define NOT_A_TOUCH_PIN 255
 
-struct ctsu_pin_info_t {
+struct ctsu_pin_info_t
+{
   uint8_t ts_num;
   uint8_t chac_idx;
   uint8_t chac_val;
 };
-
 
 void setupCTSU();
 void setupDTC();
@@ -50,22 +50,23 @@ uint16_t touchRead(int);
 #define DEFAULT_TOUCH_THRESHOLD 19000
 
 class TouchSensor {
-  private:
+private:
   uint8_t _pin;
   uint16_t _threshold;
   TouchSensor();
 
-  public:
+public:
   TouchSensor(uint8_t aPin, uint16_t aThresh) : _pin(aPin), _threshold(aThresh) {}
   void begin();
   bool read();
+  uint16_t readRaw();
 
-  void setThreshold(uint16_t t) {_threshold = t;}
-  uint16_t getThreshold() {return _threshold;}
-  
+  void setThreshold(uint16_t t) { _threshold = t; }
+  uint16_t getThreshold() { return _threshold; }
 
-
+  static void start();
+  static void startSingle();
+  static bool ready();
 };
 
-
-#endif //R4_TOUCH_H
+#endif // R4_TOUCH_H
