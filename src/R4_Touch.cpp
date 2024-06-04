@@ -89,6 +89,37 @@ const ctsu_pin_info_t g_ctsu_pin_info[NUM_ARDUINO_PINS] = {
     {NOT_A_TOUCH_PIN, 0, 0}, //  19 - A5
     {0, 0, (1 << 0)},        //  LOVE
 };
+#elif defined(ARDUINO_UNOR4_WIFI)
+// #define NUM_ARDUINO_PINS 21
+// #define NUM_CTSU_PINS 11
+
+// #define LOVE_PORT 1
+// #define LOVE_PIN 13 //Love is on P113
+
+// const ctsu_pin_info_t g_ctsu_pin_info[NUM_ARDUINO_PINS] = {
+    {9, 1, (1 << 1)},        //  0
+    {8, 1, (1 << 0)},        //  1
+    {13, 1, (1 << 5)},       //  2
+    {34, 4, (1 << 2)},       //  3
+    {NOT_A_TOUCH_PIN, 0, 0}, //  4
+    {NOT_A_TOUCH_PIN, 0, 0}, //  5
+    {12, 1, (1 << 4)},       //  6
+    {NOT_A_TOUCH_PIN, 0, 0}, //  7
+    {11, 1, (1 << 3)},       //  8
+    {2, 0, (1 << 2)},        //  9
+    {NOT_A_TOUCH_PIN, 0, 0}, //  10
+    {7, 0, (1 << 7)},       //  11
+    {6, 0, (1 << 6)},        //  12
+    {NOT_A_TOUCH_PIN, 0, 0},       //  13
+    {NOT_A_TOUCH_PIN, 0, 0}, //  14 - A0
+    {21, 2, (1 << 5)},       //  15 - A1
+    {22, 2, (1 << 6)},       //  16 - A2
+    {NOT_A_TOUCH_PIN, 0, 0}, //  17 - A3
+    {NOT_A_TOUCH_PIN, 0, 0}, //  18 - A4
+    {NOT_A_TOUCH_PIN, 0, 0}, //  19 - A5
+    {27, 3, (1 << 3)},        //  LOVE
+};
+
 #endif
 
 uint8_t dataIndexToTS[NUM_CTSU_PINS];
