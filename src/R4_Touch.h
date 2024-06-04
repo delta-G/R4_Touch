@@ -42,6 +42,8 @@ void setupCTSU();
 void setupDTC();
 void startCTSUmeasure();
 
+void startTouchMeasurement(bool fr = true);
+bool touchMeasurementReady();
 void setTouchMode(int);
 uint16_t touchRead(int);
 

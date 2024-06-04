@@ -64,7 +64,7 @@ It goes back to 1 automatically until it ends
 #define NUM_CTSU_PINS 11
 
 #define LOVE_PORT 2
-#define LOVE_PIN 4 //Love is on P204
+#define LOVE_PIN 4 // Love is on P204
 
 const ctsu_pin_info_t g_ctsu_pin_info[NUM_ARDUINO_PINS] = {
     {9, 1, (1 << 1)},        //  0
@@ -94,7 +94,7 @@ const ctsu_pin_info_t g_ctsu_pin_info[NUM_ARDUINO_PINS] = {
 #define NUM_CTSU_PINS 12
 
 #define LOVE_PORT 1
-#define LOVE_PIN 13 //Love is on P113
+#define LOVE_PIN 13 // Love is on P113
 
 const ctsu_pin_info_t g_ctsu_pin_info[NUM_ARDUINO_PINS] = {
     {9, 1, (1 << 1)},        //  0
@@ -108,25 +108,25 @@ const ctsu_pin_info_t g_ctsu_pin_info[NUM_ARDUINO_PINS] = {
     {11, 1, (1 << 3)},       //  8
     {2, 0, (1 << 2)},        //  9
     {NOT_A_TOUCH_PIN, 0, 0}, //  10
-    {7, 0, (1 << 7)},       //  11
+    {7, 0, (1 << 7)},        //  11
     {6, 0, (1 << 6)},        //  12
-    {NOT_A_TOUCH_PIN, 0, 0},       //  13
+    {NOT_A_TOUCH_PIN, 0, 0}, //  13
     {NOT_A_TOUCH_PIN, 0, 0}, //  14 - A0
     {21, 2, (1 << 5)},       //  15 - A1
     {22, 2, (1 << 6)},       //  16 - A2
     {NOT_A_TOUCH_PIN, 0, 0}, //  17 - A3
     {NOT_A_TOUCH_PIN, 0, 0}, //  18 - A4
     {NOT_A_TOUCH_PIN, 0, 0}, //  19 - A5
-    {27, 3, (1 << 3)},        //  LOVE
+    {27, 3, (1 << 3)},       //  LOVE
 };
 
 #endif
 
 uint8_t dataIndexToTS[NUM_CTSU_PINS];
-uint8_t pinToDataIndex[NUM_ARDUINO_PINS] = {NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, 
-NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, 
-NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, 
-NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN};
+uint8_t pinToDataIndex[NUM_ARDUINO_PINS] = {NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN,
+                                            NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN,
+                                            NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN,
+                                            NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN};
 
 int ctsurdEventLinkIndex;
 int ctsuwrEventLinkIndex;
@@ -139,6 +139,8 @@ extern bool fn_fired;
 uint16_t regSettings[NUM_CTSU_PINS][3];
 
 int num_configured_sensors = 0;
+bool free_running = true;
+bool ctsu_done = true;
 
 dtc_instance_ctrl_t wr_ctrl;
 transfer_info_t wr_info;
@@ -174,15 +176,31 @@ void CTSURD_handler()
 void CTSUFN_handler()
 {
   resetEventLink(ctsufnEventLinkIndex);
-  startCTSUmeasure();
+  ctsu_done = true;
+  if (free_running)
+  {
+    startCTSUmeasure();
+  }
+}
+
+bool touchMeasurementReady() {
+  return (free_running || ctsu_done);
+}
+
+void startTouchMeasurement(bool fr /*= true*/)
+{
+  free_running = fr;
+  if (ctsu_done)
+  {
+    startCTSUmeasure();
+  }
 }
 
 void startCTSUmeasure()
 {
-  // R_CTSU->CTSUMCH0 = pins[3].ts_num;  // select pin TS00 for Minima, or TS27 for WiFi
+  ctsu_done = false;
   R_DTC_Reset(&wr_ctrl, &(regSettings[0][0]), (void *)&(R_CTSU->CTSUSSC), num_configured_sensors);
   R_DTC_Reset(&rd_ctrl, (void *)&(R_CTSU->CTSUSC), &(results[0][0]), num_configured_sensors);
-  R_CTSU->CTSUCR0 = 2;
   R_CTSU->CTSUCR0 |= 1;
 }
 
@@ -206,7 +224,7 @@ void setTouchMode(int pin)
   if (pin == NUM_ARDUINO_PINS - 1)
   {
     // LOVE pin isn't defined in the core
-    R_PFS->PORT[LOVE_PORT].PIN[LOVE_PIN].PmnPFS = (1 << R_PFS_PORT_PIN_PmnPFS_PMR_Pos) | (12 << R_PFS_PORT_PIN_PmnPFS_PSEL_Pos);     
+    R_PFS->PORT[LOVE_PORT].PIN[LOVE_PIN].PmnPFS = (1 << R_PFS_PORT_PIN_PmnPFS_PMR_Pos) | (12 << R_PFS_PORT_PIN_PmnPFS_PSEL_Pos);
   }
   else
   {
@@ -389,11 +407,12 @@ void setupDTC()
   R_DTC_Enable(&rd_ctrl);
 }
 
-
-void TouchSensor::begin() {
+void TouchSensor::begin()
+{
   setTouchMode(_pin);
 }
 
-bool TouchSensor::read() {
+bool TouchSensor::read()
+{
   return (touchRead(_pin) > _threshold);
 }
