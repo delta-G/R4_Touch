@@ -45,7 +45,25 @@ void startCTSUmeasure();
 void setTouchMode(int);
 uint16_t touchRead(int);
 
+#define DEFAULT_TOUCH_THRESHOLD 19000
 
+class TouchSensor {
+  private:
+  uint8_t _pin;
+  uint16_t _threshold;
+  TouchSensor();
+
+  public:
+  TouchSensor(uint8_t aPin, uint16_t aThresh) : _pin(aPin), _threshold(aThresh) {}
+  void begin();
+  bool read();
+
+  void setThreshold(uint16_t t) {_threshold = t;}
+  uint16_t getThreshold() {return _threshold;}
+  
+
+
+};
 
 
 #endif //R4_TOUCH_H

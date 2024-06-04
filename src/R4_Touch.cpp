@@ -90,13 +90,13 @@ const ctsu_pin_info_t g_ctsu_pin_info[NUM_ARDUINO_PINS] = {
     {0, 0, (1 << 0)},        //  LOVE
 };
 #elif defined(ARDUINO_UNOR4_WIFI)
-// #define NUM_ARDUINO_PINS 21
-// #define NUM_CTSU_PINS 11
+#define NUM_ARDUINO_PINS 21
+#define NUM_CTSU_PINS 12
 
-// #define LOVE_PORT 1
-// #define LOVE_PIN 13 //Love is on P113
+#define LOVE_PORT 1
+#define LOVE_PIN 13 //Love is on P113
 
-// const ctsu_pin_info_t g_ctsu_pin_info[NUM_ARDUINO_PINS] = {
+const ctsu_pin_info_t g_ctsu_pin_info[NUM_ARDUINO_PINS] = {
     {9, 1, (1 << 1)},        //  0
     {8, 1, (1 << 0)},        //  1
     {13, 1, (1 << 5)},       //  2
@@ -123,7 +123,10 @@ const ctsu_pin_info_t g_ctsu_pin_info[NUM_ARDUINO_PINS] = {
 #endif
 
 uint8_t dataIndexToTS[NUM_CTSU_PINS];
-uint8_t pinToDataIndex[NUM_ARDUINO_PINS];
+uint8_t pinToDataIndex[NUM_ARDUINO_PINS] = {NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, 
+NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, 
+NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, 
+NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN};
 
 int ctsurdEventLinkIndex;
 int ctsuwrEventLinkIndex;
@@ -266,12 +269,6 @@ void setupCTSU()
   {
     inited = true;
 
-    // Blank the data index array to NOT_A_TOUCH_PIN's
-    for (int i = 0; i < NUM_ARDUINO_PINS; i++)
-    {
-      pinToDataIndex[i] = NOT_A_TOUCH_PIN;
-    }
-
     // Follow the flow chart Fig 41.9
     // Step 1: Discharge LPF (set TSCAP as OUTPUT LOW.)
     R_PFS->PORT[1].PIN[12].PmnPFS = (1 << R_PFS_PORT_PIN_PmnPFS_PDR_Pos);
@@ -390,4 +387,13 @@ void setupDTC()
 
   R_DTC_Open(&rd_ctrl, &rd_cfg);
   R_DTC_Enable(&rd_ctrl);
+}
+
+
+void TouchSensor::begin() {
+  setTouchMode(_pin);
+}
+
+bool TouchSensor::read() {
+  return (touchRead(_pin) > _threshold);
 }
