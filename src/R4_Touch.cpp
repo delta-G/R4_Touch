@@ -315,12 +315,12 @@ void setupCTSU()
     wr_ext.activation_source = (IRQn_Type)ctsuwrEventLinkIndex;
     ctsufnEventLinkIndex = attachEventLinkInterrupt(0x44, CTSUFN_handler);
     // Enable Event Link Controller in Master Stop Register
-    R_MSTP->MSTPCRC &= ~(1 << R_MSTP_MSTPCRC_MSTPC14_Pos);
-    // The ELC register for CTSU is ELSR18
-    // The event link signal for AGT0 underflow is 0x1E
-    R_ELC->ELSR[18].HA = 0x1E;
-    // enable ELC
-    R_ELC->ELCR = (1 << R_ELC_ELCR_ELCON_Pos);
+    // R_MSTP->MSTPCRC &= ~(1 << R_MSTP_MSTPCRC_MSTPC14_Pos);
+    // // The ELC register for CTSU is ELSR18
+    // // The event link signal for AGT0 underflow is 0x1E
+    // R_ELC->ELSR[18].HA = 0x1E;
+    // // enable ELC
+    // R_ELC->ELCR = (1 << R_ELC_ELCR_ELCON_Pos);
 
     setupDTC();
   }
