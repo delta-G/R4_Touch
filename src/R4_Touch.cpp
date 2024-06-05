@@ -465,6 +465,10 @@ void setIcoCurrentAdjust(int aPin, uint8_t aSet) {
   regSettings[pinToDataIndex[aPin]][2] = (regSettings[pinToDataIndex[aPin]][2] & ~(0x00FF)) | (aSet);
 }
 
+void setMeasurementCount(int aPin, uint8_t aCount) {
+  regSettings[pinToDataIndex[aPin]][1] = (regSettings[pinToDataIndex[aPin]][1] & ~(0xFC00)) | ((uint16_t)aCount << 10);
+}
+
 void TouchSensor::begin()
 {
   setTouchMode(_pin);
