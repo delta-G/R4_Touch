@@ -82,3 +82,47 @@ void loop() {
 ```
 
 <br><br>
+
+# Settings
+
+There are several settings that can be made for each individual pin.
+
+* `setMeasurementCount(uint8_t)` - sets the number of times the measure pulse will be repeated.  Limited to 0-63
+* `setSensorOffset(uint16_t)` - sets the sensor offset.  Limited to 0-1023.
+* `setIcoCurrentAdjust(uint8_t)` - sets the current adjustment for the ICO.  Limited to 0-255.
+* `setIcoGain(ctsu_ico_gain_t)` - set ico gain percent.  Choose from CTSU_ICO_GAIN_100, CTSU_ICO_GAIN_66, CTSU_ICO_GAIN_50, or CTSU_ICO_GAIN_40.
+* `setClockDiv(ctsu_clock_div_t)` - set the clock divider.  The CTSU uses PCLCKB which is set to system clock / 2.
+
+Settings for the clock divider are:
+  CTSU_CLOCK_DIV_2,
+  CTSU_CLOCK_DIV_4,
+  CTSU_CLOCK_DIV_6,
+  CTSU_CLOCK_DIV_8,
+  CTSU_CLOCK_DIV_10,
+  CTSU_CLOCK_DIV_12,
+  CTSU_CLOCK_DIV_14,
+  CTSU_CLOCK_DIV_16,
+  CTSU_CLOCK_DIV_18,
+  CTSU_CLOCK_DIV_20,
+  CTSU_CLOCK_DIV_22,
+  CTSU_CLOCK_DIV_24,
+  CTSU_CLOCK_DIV_26,
+  CTSU_CLOCK_DIV_28,
+  CTSU_CLOCK_DIV_30,
+  CTSU_CLOCK_DIV_32,
+  CTSU_CLOCK_DIV_34,
+  CTSU_CLOCK_DIV_36,
+  CTSU_CLOCK_DIV_38,
+  CTSU_CLOCK_DIV_40,
+  CTSU_CLOCK_DIV_42,
+  CTSU_CLOCK_DIV_44,
+  CTSU_CLOCK_DIV_46,
+  CTSU_CLOCK_DIV_48,
+  CTSU_CLOCK_DIV_50,
+  CTSU_CLOCK_DIV_52,
+  CTSU_CLOCK_DIV_54,
+  CTSU_CLOCK_DIV_56,
+  CTSU_CLOCK_DIV_58,
+  CTSU_CLOCK_DIV_60,
+  CTSU_CLOCK_DIV_62,
+  CTSU_CLOCK_DIV_64
