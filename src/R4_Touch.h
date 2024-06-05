@@ -26,8 +26,9 @@ R4_CTSU.h  --  Capacitive Touch Sensing for Arduino UNO-R4
 #endif
 
 #include "Arduino.h"
-#include "EventLinkInterrupt.h"
+// #include "EventLinkInterrupt.h"
 #include "r_dtc.h"
+#include "IRQManager.h"
 
 #define NOT_A_TOUCH_PIN 255
 

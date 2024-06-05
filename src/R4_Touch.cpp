@@ -156,7 +156,8 @@ transfer_cfg_t rd_cfg = {&rd_info, &rd_ext};
 void CTSUWR_handler()
 {
   // we need this interrupt to trigger the CTSU to go to state 3.
-  resetEventLink(ctsuwrEventLinkIndex);
+  IRQn_Type irq = R_FSP_CurrentIrqGet();
+  R_BSP_IrqStatusClear(irq);
   // R_CTSU->CTSUMCH0 = pins[0].ts_num;
   // R_CTSU->CTSUSO1 = 0x0F00;
   // wr_fired = true;
@@ -165,7 +166,8 @@ void CTSUWR_handler()
 void CTSURD_handler()
 {
   // static int i = 0;
-  resetEventLink(ctsurdEventLinkIndex);
+  IRQn_Type irq = R_FSP_CurrentIrqGet();
+  R_BSP_IrqStatusClear(irq);
   // results[i][0] = R_CTSU->CTSUSC;
   // // Must read CTSURC even if we don't use it in order for the unit to move on
   // results[i++][1] = R_CTSU->CTSURC;
@@ -175,7 +177,8 @@ void CTSURD_handler()
 
 void CTSUFN_handler()
 {
-  resetEventLink(ctsufnEventLinkIndex);
+  IRQn_Type irq = R_FSP_CurrentIrqGet();
+  R_BSP_IrqStatusClear(irq);
   ctsu_done = true;
   if (free_running)
   {
@@ -323,16 +326,21 @@ void setupCTSU()
     // R_CTSU->CTSUCHAC[pins[0].chac_idx] = pins[0].chac_val;  // enable pin TS00 for measurement
     R_CTSU->CTSUDCLKC = 0x30; // data sheet dictates these settings.
 
-    // R_CTSU->CTSUMCH0 = pins[3].ts_num; // select first pin
-
     // CTSUWR is event 0x42
     // CTSURD is event 0x43
     // CTSUFN is event 0x44
-    ctsurdEventLinkIndex = attachEventLinkInterrupt(0x43, CTSURD_handler);
-    rd_ext.activation_source = (IRQn_Type)ctsurdEventLinkIndex;
-    ctsuwrEventLinkIndex = attachEventLinkInterrupt(0x42, CTSUWR_handler);
-    wr_ext.activation_source = (IRQn_Type)ctsuwrEventLinkIndex;
-    ctsufnEventLinkIndex = attachEventLinkInterrupt(0x44, CTSUFN_handler);
+    GenericIrqCfg_t rd_int_cfg = {FSP_INVALID_VECTOR, 12, ELC_EVENT_CTSU_READ};
+    GenericIrqCfg_t wr_int_cfg = {FSP_INVALID_VECTOR, 12, ELC_EVENT_CTSU_WRITE};
+    GenericIrqCfg_t fn_int_cfg = {FSP_INVALID_VECTOR, 12, ELC_EVENT_CTSU_END};
+    IRQManager::getInstance().addGenericInterrupt(rd_int_cfg, CTSURD_handler);
+    rd_ext.activation_source = rd_int_cfg.irq;
+    IRQManager::getInstance().addGenericInterrupt(wr_int_cfg, CTSUWR_handler);
+    wr_ext.activation_source = wr_int_cfg.irq;
+    IRQManager::getInstance().addGenericInterrupt(fn_int_cfg, CTSUFN_handler);
+    // Touch reads take too long for the AGT0 1ms thing to really matter
+    // especially if multiple sensors are involved but I'm leaving this here
+    // so I can see how to maybe put this on another event signal and slow it 
+    // down a little. 
     // Enable Event Link Controller in Master Stop Register
     // R_MSTP->MSTPCRC &= ~(1 << R_MSTP_MSTPCRC_MSTPC14_Pos);
     // // The ELC register for CTSU is ELSR18
