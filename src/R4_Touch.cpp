@@ -208,6 +208,10 @@ void startCTSUmeasure()
   R_CTSU->CTSUCR0 |= 1;
 }
 
+void stopCTSU() {
+  R_CTSU->CTSUCR0 = 0;
+}
+
 void setTouchMode(int pin)
 {
   // find the pin info:
@@ -223,7 +227,7 @@ void setTouchMode(int pin)
     return;
   }
   // stop CTSU if it is running
-  R_CTSU->CTSUCR0 = 0;
+  stopCTSU();
   // set pin PFS setting
   if (pin == NUM_ARDUINO_PINS - 1)
   {

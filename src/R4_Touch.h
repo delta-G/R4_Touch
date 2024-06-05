@@ -42,6 +42,7 @@ struct ctsu_pin_info_t
 void setupCTSU();
 void setupDTC();
 void startCTSUmeasure();
+void stopCTSU();
 
 void startTouchMeasurement(bool fr = true);
 bool touchMeasurementReady();
@@ -66,6 +67,7 @@ public:
   uint16_t getThreshold() { return _threshold; }
 
   static void start();
+  static void stop() {stopCTSU();}
   static void startSingle();
   static bool ready();
 };
