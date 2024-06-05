@@ -198,7 +198,7 @@ bool touchMeasurementReady()
 void startTouchMeasurement(bool fr /*= true*/)
 {
   free_running = fr;
-  if (ctsu_done)
+  if (ctsu_done || ((R_CTSU->CTSUST & 7) == 0))
   {
     startCTSUmeasure();
   }
@@ -209,11 +209,11 @@ void startCTSUmeasure()
   ctsu_done = false;
   R_DTC_Reset(&wr_ctrl, &(regSettings[0][0]), (void *)&(R_CTSU->CTSUSSC), num_configured_sensors);
   R_DTC_Reset(&rd_ctrl, (void *)&(R_CTSU->CTSUSC), &(results[0][0]), num_configured_sensors);
-  R_CTSU->CTSUCR0 |= 1;
+  R_CTSU->CTSUCR0 = 1;
 }
 
 void stopCTSU() {
-  R_CTSU->CTSUCR0 = 0;
+  R_CTSU->CTSUCR0 = 0x10;
 }
 
 void setTouchMode(int pin)
