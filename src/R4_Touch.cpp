@@ -426,7 +426,7 @@ void setupDTC()
 
 
 
-void setClockDiv(int aPin, ctsu_clock_div_t aDiv){
+void setTouchPinClockDiv(int aPin, ctsu_clock_div_t aDiv){
   // calculate CTSUSSC settings from clock div
   uint16_t ssc = 0;
   double ctsu_freq = (CTSU_BASE_FREQ / (int)aDiv);
@@ -457,19 +457,19 @@ void setClockDiv(int aPin, ctsu_clock_div_t aDiv){
   regSettings[pinToDataIndex[aPin]][2] = (regSettings[pinToDataIndex[aPin]][2] & ~(0x1F00)) | ((uint16_t)aDiv << 8);
 }
 
-void setIcogain(int aPin, ctsu_ico_gain_t aGain) {
+void ctsuSetIcogain(int aPin, ctsu_ico_gain_t aGain) {
   regSettings[pinToDataIndex[aPin]][2] = (regSettings[pinToDataIndex[aPin]][2] & ~(0x6000)) | ((uint16_t)aGain << 13);
 }
 
-void setIcoCurrentAdjust(int aPin, uint8_t aSet) {  
+void setTouchPinIcoCurrentAdjust(int aPin, uint8_t aSet) {  
   regSettings[pinToDataIndex[aPin]][2] = (regSettings[pinToDataIndex[aPin]][2] & ~(0x00FF)) | (aSet);
 }
 
-void setMeasurementCount(int aPin, uint8_t aCount) {
+void setTouchPinMeasurementCount(int aPin, uint8_t aCount) {
   regSettings[pinToDataIndex[aPin]][1] = (regSettings[pinToDataIndex[aPin]][1] & ~(0xFC00)) | ((uint16_t)aCount << 10);
 }
 
-void setSensorOffset(int aPin, uint16_t aOff) {
+void setTouchPinSensorOffset(int aPin, uint16_t aOff) {
   regSettings[pinToDataIndex[aPin]][1] = (regSettings[pinToDataIndex[aPin]][1] & ~(0x03FF)) | (aOff);
 }
 

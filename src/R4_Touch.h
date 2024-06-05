@@ -91,11 +91,11 @@ bool touchMeasurementReady();
 void setTouchMode(int);
 uint16_t touchRead(int);
 
-void setClockDiv(int, ctsu_clock_div_t);
-void setIcoGain(int, ctsu_ico_gain_t);
-void setIcoCurrentAdjust(int, uint8_t);
-void setMeasurementCount(int, uint8_t);
-void setSensorOffset(int, uint16_t);
+void setTouchPinClockDiv(int, ctsu_clock_div_t);
+void setTouchPinIcoGain(int, ctsu_ico_gain_t);
+void setTouchPinIcoCurrentAdjust(int, uint8_t);
+void setTouchPinMeasurementCount(int, uint8_t);
+void setTouchPinSensorOffset(int, uint16_t);
 
 #define DEFAULT_TOUCH_THRESHOLD 19000
 
@@ -113,6 +113,12 @@ public:
 
   void setThreshold(uint16_t t) { _threshold = t; }
   uint16_t getThreshold() { return _threshold; }
+
+  void setClockDiv(ctsu_clock_div_t s) {setTouchPinClockDiv(_pin, s);}
+  void setIcoGain(ctsu_ico_gain_t s) {setTouchPinIcoGain(_pin, s);}
+  void setIcoCurrentAdjust(uint8_t s) {setTouchPinIcoCurrentAdjust(_pin, s);}
+  void setMeasurementCount(uint8_t s) {setTouchPinMeasurementCount(_pin, s);}
+  void setSensorOffset(uint16_t s) {setTouchPinSensorOffset(_pin, s);}
 
   static void start();
   static void stop() {stopCTSU();}
