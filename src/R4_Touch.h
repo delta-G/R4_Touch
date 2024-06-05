@@ -91,7 +91,8 @@ bool touchMeasurementReady();
 void setTouchMode(int);
 uint16_t touchRead(int);
 
-void setClockDiv(ctsu_clock_div_t);
+void setClockDiv(int, ctsu_clock_div_t);
+void setIcoGain(int, ctsu_ico_gain_t);
 
 #define DEFAULT_TOUCH_THRESHOLD 19000
 

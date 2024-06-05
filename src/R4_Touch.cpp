@@ -457,6 +457,9 @@ void setClockDiv(int aPin, ctsu_clock_div_t aDiv){
   regSettings[pinToDataIndex[aPin]][2] = (regSettings[pinToDataIndex[aPin]][2] & ~(0x1F00)) | ((uint16_t)aDiv << 8);
 }
 
+void setIcogain(int aPin, ctsu_ico_gain_t aGain) {
+  regSettings[pinToDataIndex[aPin]][2] = (regSettings[pinToDataIndex[aPin]][2] & ~(0x6000)) | ((uint16_t)aGain << 13);
+}
 
 
 void TouchSensor::begin()
