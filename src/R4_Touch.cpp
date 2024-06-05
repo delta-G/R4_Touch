@@ -472,30 +472,3 @@ void setTouchPinMeasurementCount(int aPin, uint8_t aCount) {
 void setTouchPinSensorOffset(int aPin, uint16_t aOff) {
   regSettings[pinToDataIndex[aPin]][1] = (regSettings[pinToDataIndex[aPin]][1] & ~(0x03FF)) | (aOff);
 }
-
-void TouchSensor::begin()
-{
-  setTouchMode(_pin);
-}
-
-bool TouchSensor::read()
-{
-  return (touchRead(_pin) > _threshold);
-}
-
-uint16_t TouchSensor::readRaw()
-{
-  return touchRead(_pin);
-}
-
-void TouchSensor::start()
-{
-  startTouchMeasurement();
-}
-
-void TouchSensor::startSingle()
-{
-  startTouchMeasurement(false);
-  while (!touchMeasurementReady())
-    ;
-}

@@ -107,9 +107,9 @@ private:
 
 public:
   TouchSensor(uint8_t aPin, uint16_t aThresh) : _pin(aPin), _threshold(aThresh) {}
-  void begin();
-  bool read();
-  uint16_t readRaw();
+  void begin() {setTouchMode(_pin);}
+  bool read() {return (touchRead(_pin) > _threshold);}
+  uint16_t readRaw() {return touchRead(_pin);}
 
   void setThreshold(uint16_t t) { _threshold = t; }
   uint16_t getThreshold() { return _threshold; }
@@ -120,10 +120,10 @@ public:
   void setMeasurementCount(uint8_t s) {setTouchPinMeasurementCount(_pin, s);}
   void setSensorOffset(uint16_t s) {setTouchPinSensorOffset(_pin, s);}
 
-  static void start();
+
+  static void start() {startTouchMeasurement();}
   static void stop() {stopCTSU();}
-  static void startSingle();
-  static bool ready();
+  static void startSingle() {startTouchMeasurement(false);  while (!touchMeasurementReady());}
 };
 
 #endif // R4_TOUCH_H
