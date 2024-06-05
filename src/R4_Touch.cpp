@@ -461,6 +461,9 @@ void setIcogain(int aPin, ctsu_ico_gain_t aGain) {
   regSettings[pinToDataIndex[aPin]][2] = (regSettings[pinToDataIndex[aPin]][2] & ~(0x6000)) | ((uint16_t)aGain << 13);
 }
 
+void setIcoCurrentAdjust(int aPin, uint8_t aSet) {  
+  regSettings[pinToDataIndex[aPin]][2] = (regSettings[pinToDataIndex[aPin]][2] & ~(0x00FF)) | (aSet);
+}
 
 void TouchSensor::begin()
 {
