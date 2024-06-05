@@ -32,6 +32,48 @@ R4_CTSU.h  --  Capacitive Touch Sensing for Arduino UNO-R4
 
 #define NOT_A_TOUCH_PIN 255
 
+typedef enum e_ctsu_ico_gain {
+  CTSU_ICO_GAIN_100 = 0,
+  CTSU_ICO_GAIN_66 = 1,
+  CTSU_ICO_GAIN_50 = 2,
+  CTSU_ICO_GAIN_40 = 3
+} ctsu_ico_gain_t;
+
+typedef enum e_ctsu_clock_div {
+  CTSU_CLOCK_DIV_2 = 0,
+  CTSU_CLOCK_DIV_4 = 1,
+  CTSU_CLOCK_DIV_6 = 2,
+  CTSU_CLOCK_DIV_8 = 3,
+  CTSU_CLOCK_DIV_10 = 4,
+  CTSU_CLOCK_DIV_12 = 5,
+  CTSU_CLOCK_DIV_14 = 6,
+  CTSU_CLOCK_DIV_16 = 7,
+  CTSU_CLOCK_DIV_18 = 8,
+  CTSU_CLOCK_DIV_20 = 9,
+  CTSU_CLOCK_DIV_22 = 10,
+  CTSU_CLOCK_DIV_24 = 11,
+  CTSU_CLOCK_DIV_26 = 12,
+  CTSU_CLOCK_DIV_28 = 13,
+  CTSU_CLOCK_DIV_30 = 14,
+  CTSU_CLOCK_DIV_32 = 15,
+  CTSU_CLOCK_DIV_34 = 16,
+  CTSU_CLOCK_DIV_36 = 17,
+  CTSU_CLOCK_DIV_38 = 18,
+  CTSU_CLOCK_DIV_40 = 19,
+  CTSU_CLOCK_DIV_42 = 20,
+  CTSU_CLOCK_DIV_44 = 21,
+  CTSU_CLOCK_DIV_46 = 22,
+  CTSU_CLOCK_DIV_48 = 23,
+  CTSU_CLOCK_DIV_50 = 24,
+  CTSU_CLOCK_DIV_52 = 25,
+  CTSU_CLOCK_DIV_54 = 26,
+  CTSU_CLOCK_DIV_56 = 27,
+  CTSU_CLOCK_DIV_58 = 28,
+  CTSU_CLOCK_DIV_60 = 29,
+  CTSU_CLOCK_DIV_62 = 30,
+  CTSU_CLOCK_DIV_64 = 31
+} ctsu_clock_div_t;
+
 struct ctsu_pin_info_t
 {
   uint8_t ts_num;
@@ -48,6 +90,8 @@ void startTouchMeasurement(bool fr = true);
 bool touchMeasurementReady();
 void setTouchMode(int);
 uint16_t touchRead(int);
+
+void setClockDiv(ctsu_clock_div_t);
 
 #define DEFAULT_TOUCH_THRESHOLD 19000
 

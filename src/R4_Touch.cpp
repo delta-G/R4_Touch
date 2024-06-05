@@ -59,6 +59,10 @@ It goes back to 1 automatically until it ends
 
 */
 
+// CTSU is running off PCLKB at full speed.
+//  PCLKB is running off system clock / 2
+#define CTSU_BASE_FREQ 24000.0
+
 #if defined(ARDUINO_UNOR4_MINIMA)
 #define NUM_ARDUINO_PINS 21
 #define NUM_CTSU_PINS 11
@@ -419,6 +423,41 @@ void setupDTC()
   R_DTC_Open(&rd_ctrl, &rd_cfg);
   R_DTC_Enable(&rd_ctrl);
 }
+
+
+
+void setClockDiv(int aPin, ctsu_clock_div_t aDiv){
+  // calculate CTSUSSC settings from clock div
+  uint16_t ssc = 0;
+  double ctsu_freq = (CTSU_BASE_FREQ / (int)aDiv);
+  if (ctsu_freq < 400.0) {
+    ssc = 10;
+  } else if (ctsu_freq < 440.0) {
+    ssc = 9;
+  } else if (ctsu_freq < 500.0) {
+    ssc = 8;
+  } else if (ctsu_freq < 570.0) {
+    ssc = 7;
+  } else if (ctsu_freq < 670.0) {
+    ssc = 6;
+  } else if (ctsu_freq < 800.0) {
+    ssc = 5;
+  } else if (ctsu_freq < 1000.0) {
+    ssc = 4;
+  } else if (ctsu_freq < 1330.0) {
+    ssc = 3;
+  } else if (ctsu_freq < 2000.0) {
+    ssc = 2;
+  } else if (ctsu_freq < 4000.0) {
+    ssc = 1;
+  } 
+  // set the CTSUSSC register
+  regSettings[pinToDataIndex[aPin]][0] = (ssc << 8);
+  // setting for CTSUSO1
+  regSettings[pinToDataIndex[aPin]][2] = (regSettings[pinToDataIndex[aPin]][2] & ~(0x1F00)) | ((uint16_t)aDiv << 8);
+}
+
+
 
 void TouchSensor::begin()
 {
