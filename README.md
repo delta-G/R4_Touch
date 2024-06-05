@@ -31,13 +31,16 @@ The `read()` function returns true if the sensor is touched, otherwise false.  T
 
 The `readRaw()` function will get the raw reading from the unit.  This can be handy to help determine what to use for the threshold if the default values don't work.  
 
-Start the capacitive touch unit by calling `TouchSensor::start()`.  This will start the unit in free-running mode so that each time the unit finishes a measurement it starts a new one. 
-
-If you would like to run the unit once then call with an argument of false.  `TouchSensor::startSingle()` will start a single measurement for all attached sensors.  The method blocks until all sensors are read.  Each sensor takes around 400 microseconds with default settings.  
-
 The `read()` and `readRaw()` functions DO NOT trigger a measurement of the sensor.  They are only returning the last read values.  In free-running mode this will always be a recent number since the code is restarting itself.  Otherwise you must use `TouchSensor::start()` or `TouchSensor::startSingle()` to trigger a new measurement.  
 
 There are also `setThreshold(uint16_t)` and `getThreshold()` functions for the threshold value if you need to change or access it. 
+
+Start the capacitive touch unit by calling the static method `TouchSensor::start()`.  This will start the unit in free-running mode so that each time the unit finishes a measurement it starts a new one. 
+
+If you would like to run the unit once then call with an argument of false.  The static method `TouchSensor::startSingle()` will start a single measurement for all attached sensors.  The method blocks until all sensors are read.  Each sensor takes around 400 microseconds with default settings.  
+
+There is a static method `TouchSensor::stop()` that will stop the CTSU but retain all settings. 
+
 
 # Example 
 ```
