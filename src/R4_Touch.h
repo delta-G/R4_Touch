@@ -109,7 +109,7 @@ private:
 public:
   TouchSensor(uint8_t aPin, uint16_t aThresh) : _pin(aPin), _threshold(aThresh) {}
   void begin() {setTouchMode(_pin);}
-  bool read() {return ((touchRead(_pin)/getReferenceCount(_pin))> _threshold);}
+  bool read() {return (touchRead(_pin) > _threshold);}
   uint16_t readRaw() {return touchRead(_pin);}
 
   void setThreshold(uint16_t t) { _threshold = t; }
