@@ -90,6 +90,7 @@ void startTouchMeasurement(bool fr = true);
 bool touchMeasurementReady();
 void setTouchMode(int);
 uint16_t touchRead(int);
+uint16_t getReferenceCount(int);
 
 void setTouchPinClockDiv(int, ctsu_clock_div_t);
 void setTouchPinIcoGain(int, ctsu_ico_gain_t);
@@ -108,7 +109,7 @@ private:
 public:
   TouchSensor(uint8_t aPin, uint16_t aThresh) : _pin(aPin), _threshold(aThresh) {}
   void begin() {setTouchMode(_pin);}
-  bool read() {return (touchRead(_pin) > _threshold);}
+  bool read() {return ((touchRead(_pin)/getReferenceCount(_pin))> _threshold);}
   uint16_t readRaw() {return touchRead(_pin);}
 
   void setThreshold(uint16_t t) { _threshold = t; }

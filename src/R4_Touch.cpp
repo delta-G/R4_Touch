@@ -212,7 +212,8 @@ void startCTSUmeasure()
   R_CTSU->CTSUCR0 = 1;
 }
 
-void stopCTSU() {
+void stopCTSU()
+{
   R_CTSU->CTSUCR0 = 0x10;
 }
 
@@ -289,7 +290,16 @@ uint16_t touchRead(int pin)
   {
     return 0;
   }
-  return results[pinToDataIndex[pin]][0] - results[pinToDataIndex[pin]][1];
+  return results[pinToDataIndex[pin]][0];
+}
+
+uint16_t getReferenceCount(int pin)
+{
+  if (pinToDataIndex[pin] == NOT_A_TOUCH_PIN)
+  {
+    return 0;
+  }
+  return results[pinToDataIndex[pin]][1];
 }
 
 void setupCTSU()
@@ -347,8 +357,8 @@ void setupCTSU()
     IRQManager::getInstance().addGenericInterrupt(fn_int_cfg, CTSUFN_handler);
     // Touch reads take too long for the AGT0 1ms thing to really matter
     // especially if multiple sensors are involved but I'm leaving this here
-    // so I can see how to maybe put this on another event signal and slow it 
-    // down a little. 
+    // so I can see how to maybe put this on another event signal and slow it
+    // down a little.
     // Enable Event Link Controller in Master Stop Register
     // R_MSTP->MSTPCRC &= ~(1 << R_MSTP_MSTPCRC_MSTPC14_Pos);
     // // The ELC register for CTSU is ELSR18
@@ -424,51 +434,73 @@ void setupDTC()
   R_DTC_Enable(&rd_ctrl);
 }
 
-
-
-void setTouchPinClockDiv(int aPin, ctsu_clock_div_t aDiv){
+void setTouchPinClockDiv(int aPin, ctsu_clock_div_t aDiv)
+{
   // calculate CTSUSSC settings from clock div
   uint16_t ssc = 0;
   double ctsu_freq = (CTSU_BASE_FREQ / (int)aDiv);
-  if (ctsu_freq < 400.0) {
+  if (ctsu_freq < 400.0)
+  {
     ssc = 10;
-  } else if (ctsu_freq < 440.0) {
+  }
+  else if (ctsu_freq < 440.0)
+  {
     ssc = 9;
-  } else if (ctsu_freq < 500.0) {
+  }
+  else if (ctsu_freq < 500.0)
+  {
     ssc = 8;
-  } else if (ctsu_freq < 570.0) {
+  }
+  else if (ctsu_freq < 570.0)
+  {
     ssc = 7;
-  } else if (ctsu_freq < 670.0) {
+  }
+  else if (ctsu_freq < 670.0)
+  {
     ssc = 6;
-  } else if (ctsu_freq < 800.0) {
+  }
+  else if (ctsu_freq < 800.0)
+  {
     ssc = 5;
-  } else if (ctsu_freq < 1000.0) {
+  }
+  else if (ctsu_freq < 1000.0)
+  {
     ssc = 4;
-  } else if (ctsu_freq < 1330.0) {
+  }
+  else if (ctsu_freq < 1330.0)
+  {
     ssc = 3;
-  } else if (ctsu_freq < 2000.0) {
+  }
+  else if (ctsu_freq < 2000.0)
+  {
     ssc = 2;
-  } else if (ctsu_freq < 4000.0) {
+  }
+  else if (ctsu_freq < 4000.0)
+  {
     ssc = 1;
-  } 
+  }
   // set the CTSUSSC register
   regSettings[pinToDataIndex[aPin]][0] = (ssc << 8);
   // setting for CTSUSO1
   regSettings[pinToDataIndex[aPin]][2] = (regSettings[pinToDataIndex[aPin]][2] & ~(0x1F00)) | ((uint16_t)aDiv << 8);
 }
 
-void setTouchPinIcoGain(int aPin, ctsu_ico_gain_t aGain) {
+void setTouchPinIcoGain(int aPin, ctsu_ico_gain_t aGain)
+{
   regSettings[pinToDataIndex[aPin]][2] = (regSettings[pinToDataIndex[aPin]][2] & ~(0x6000)) | ((uint16_t)aGain << 13);
 }
 
-void setTouchPinIcoCurrentAdjust(int aPin, uint8_t aSet) {  
+void setTouchPinIcoCurrentAdjust(int aPin, uint8_t aSet)
+{
   regSettings[pinToDataIndex[aPin]][2] = (regSettings[pinToDataIndex[aPin]][2] & ~(0x00FF)) | (aSet);
 }
 
-void setTouchPinMeasurementCount(int aPin, uint8_t aCount) {
+void setTouchPinMeasurementCount(int aPin, uint8_t aCount)
+{
   regSettings[pinToDataIndex[aPin]][1] = (regSettings[pinToDataIndex[aPin]][1] & ~(0xFC00)) | ((uint16_t)aCount << 10);
 }
 
-void setTouchPinSensorOffset(int aPin, uint16_t aOff) {
+void setTouchPinSensorOffset(int aPin, uint16_t aOff)
+{
   regSettings[pinToDataIndex[aPin]][1] = (regSettings[pinToDataIndex[aPin]][1] & ~(0x03FF)) | (aOff);
 }
