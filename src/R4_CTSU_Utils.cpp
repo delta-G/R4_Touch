@@ -498,7 +498,7 @@ void setTouchPinIcoCurrentAdjust(int aPin, uint8_t aSet)
 
 void setTouchPinMeasurementCount(int aPin, uint8_t aCount)
 {
-  regSettings[pinToDataIndex[aPin]][1] = (regSettings[pinToDataIndex[aPin]][1] & ~(0xFC00)) | ((uint16_t)aCount << 10);
+  regSettings[pinToDataIndex[aPin]][1] = (regSettings[pinToDataIndex[aPin]][1] & ~(0xFC00)) | (((uint16_t)aCount - 1) << 10);
 }
 
 void setTouchPinSensorOffset(int aPin, uint16_t aOff)

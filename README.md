@@ -89,9 +89,9 @@ void loop() {
 
 # Settings
 
-There are several settings that can be made for each individual pin.
+There are several settings that can be made for each individual pin.  Calling any of these functions while the touch unit is running will cause it to stop.  You must restart the unit by calling `TouchSensor::start()` or `TouchSensor::startSingle()` after changing your settings. 
 
-* `setMeasurementCount(uint8_t)` - sets the number of times the measure pulse will be repeated.  Limited to 0-63
+* `setMeasurementCount(uint8_t)` - sets the number of times the measure pulse will be repeated.  Limited to 1-64
 * `setSensorOffset(uint16_t)` - sets the sensor offset.  Limited to 0-1023.
 * `setIcoCurrentAdjust(uint8_t)` - sets the current adjustment for the ICO.  Limited to 0-255.
 * `setIcoGain(ctsu_ico_gain_t)` - set ico gain percent.  Choose from CTSU_ICO_GAIN_100, CTSU_ICO_GAIN_66, CTSU_ICO_GAIN_50, or CTSU_ICO_GAIN_40.
