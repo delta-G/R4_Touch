@@ -30,16 +30,26 @@ R4_CTSU.h  --  Capacitive Touch Sensing for Arduino UNO-R4
 #include "r_dtc.h"
 #include "IRQManager.h"
 
+#define NUM_ARDUINO_PINS 21
+#if defined(ARDUINO_UNOR4_MINIMA)
+#define NUM_CTSU_PINS 11
+#elif defined(ARDUINO_UNOR4_WIFI)
+#define NUM_CTSU_PINS 12
+#endif
 #define NOT_A_TOUCH_PIN 255
 
-typedef enum e_ctsu_ico_gain {
+typedef void (*fn_callback_ptr_t)(uint16_t[NUM_CTSU_PINS][2]);
+
+typedef enum e_ctsu_ico_gain
+{
   CTSU_ICO_GAIN_100 = 0,
   CTSU_ICO_GAIN_66 = 1,
   CTSU_ICO_GAIN_50 = 2,
   CTSU_ICO_GAIN_40 = 3
 } ctsu_ico_gain_t;
 
-typedef enum e_ctsu_clock_div {
+typedef enum e_ctsu_clock_div
+{
   CTSU_CLOCK_DIV_2 = 0,
   CTSU_CLOCK_DIV_4 = 1,
   CTSU_CLOCK_DIV_6 = 2,
@@ -98,9 +108,12 @@ void setTouchPinIcoCurrentAdjust(int, uint8_t);
 void setTouchPinMeasurementCount(int, uint8_t);
 void setTouchPinSensorOffset(int, uint16_t);
 
+void attachMeasurementEndCallback(fn_callback_ptr_t);
+
 #define DEFAULT_TOUCH_THRESHOLD 19000
 
-class TouchSensor {
+class TouchSensor
+{
 private:
   uint8_t _pin;
   uint16_t _threshold;
@@ -108,24 +121,29 @@ private:
 
 public:
   TouchSensor(uint8_t aPin, uint16_t aThresh) : _pin(aPin), _threshold(aThresh) {}
-  void begin() {setTouchMode(_pin);}
-  bool read() {return (touchRead(_pin) > _threshold);}
-  uint16_t readRaw() {return touchRead(_pin);}
-  uint16_t readReference() {return getReferenceCount(_pin);}
+  void begin() { setTouchMode(_pin); }
+  bool read() { return (touchRead(_pin) > _threshold); }
+  uint16_t readRaw() { return touchRead(_pin); }
+  uint16_t readReference() { return getReferenceCount(_pin); }
 
   void setThreshold(uint16_t t) { _threshold = t; }
   uint16_t getThreshold() { return _threshold; }
 
-  void setClockDiv(ctsu_clock_div_t s) {setTouchPinClockDiv(_pin, s);}
-  void setIcoGain(ctsu_ico_gain_t s) {setTouchPinIcoGain(_pin, s);}
-  void setIcoCurrentAdjust(uint8_t s) {setTouchPinIcoCurrentAdjust(_pin, s);}
-  void setMeasurementCount(uint8_t s) {setTouchPinMeasurementCount(_pin, s);}
-  void setSensorOffset(uint16_t s) {setTouchPinSensorOffset(_pin, s);}
+  void setClockDiv(ctsu_clock_div_t s) { setTouchPinClockDiv(_pin, s); }
+  void setIcoGain(ctsu_ico_gain_t s) { setTouchPinIcoGain(_pin, s); }
+  void setIcoCurrentAdjust(uint8_t s) { setTouchPinIcoCurrentAdjust(_pin, s); }
+  void setMeasurementCount(uint8_t s) { setTouchPinMeasurementCount(_pin, s); }
+  void setSensorOffset(uint16_t s) { setTouchPinSensorOffset(_pin, s); }
 
-
-  static void start() {startTouchMeasurement();}
-  static void stop() {stopCTSU();}
-  static void startSingle() {startTouchMeasurement(false);  while (!touchMeasurementReady());}
+  static void start() { startTouchMeasurement(); }
+  static void stop() { stopCTSU(); }
+  static void startSingle()
+  {
+    startTouchMeasurement(false);
+    while (!touchMeasurementReady())
+      ;
+  }
+  static void attachCallback(fn_callback_ptr_t cb) { attachMeasurementEndCallback(cb); };
 };
 
 #endif // R4_TOUCH_H

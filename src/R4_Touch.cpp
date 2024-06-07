@@ -64,8 +64,6 @@ It goes back to 1 automatically until it ends
 #define CTSU_BASE_FREQ 24000.0
 
 #if defined(ARDUINO_UNOR4_MINIMA)
-#define NUM_ARDUINO_PINS 21
-#define NUM_CTSU_PINS 11
 
 #define LOVE_PORT 2
 #define LOVE_PIN 4 // Love is on P204
@@ -94,8 +92,6 @@ const ctsu_pin_info_t g_ctsu_pin_info[NUM_ARDUINO_PINS] = {
     {0, 0, (1 << 0)},        //  LOVE
 };
 #elif defined(ARDUINO_UNOR4_WIFI)
-#define NUM_ARDUINO_PINS 21
-#define NUM_CTSU_PINS 12
 
 #define LOVE_PORT 1
 #define LOVE_PIN 13 // Love is on P113
@@ -132,19 +128,15 @@ uint8_t pinToDataIndex[NUM_ARDUINO_PINS] = {NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NO
                                             NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN,
                                             NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN, NOT_A_TOUCH_PIN};
 
-int ctsurdEventLinkIndex;
-int ctsuwrEventLinkIndex;
-int ctsufnEventLinkIndex;
-
 uint16_t results[NUM_CTSU_PINS][2];
-
-extern bool fn_fired;
 
 uint16_t regSettings[NUM_CTSU_PINS][3];
 
 int num_configured_sensors = 0;
 bool free_running = true;
 volatile bool ctsu_done = true;
+
+fn_callback_ptr_t ctsu_fn_callback = nullptr;
 
 dtc_instance_ctrl_t wr_ctrl;
 transfer_info_t wr_info;
@@ -184,6 +176,10 @@ void CTSUFN_handler()
   IRQn_Type irq = R_FSP_CurrentIrqGet();
   R_BSP_IrqStatusClear(irq);
   ctsu_done = true;
+  if (ctsu_fn_callback)
+  {
+    ctsu_fn_callback(results);
+  }
   if (free_running)
   {
     startCTSUmeasure();
@@ -503,4 +499,9 @@ void setTouchPinMeasurementCount(int aPin, uint8_t aCount)
 void setTouchPinSensorOffset(int aPin, uint16_t aOff)
 {
   regSettings[pinToDataIndex[aPin]][1] = (regSettings[pinToDataIndex[aPin]][1] & ~(0x03FF)) | (aOff);
+}
+
+void attachMeasurementEndCallback(fn_callback_ptr_t cb)
+{
+  ctsu_fn_callback = cb;
 }
