@@ -111,6 +111,7 @@ public:
   void begin() {setTouchMode(_pin);}
   bool read() {return (touchRead(_pin) > _threshold);}
   uint16_t readRaw() {return touchRead(_pin);}
+  uint16_t readReference() {return getReferenceCount(_pin);}
 
   void setThreshold(uint16_t t) { _threshold = t; }
   uint16_t getThreshold() { return _threshold; }
