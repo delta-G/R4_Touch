@@ -38,7 +38,7 @@ R4_CTSU.h  --  Capacitive Touch Sensing for Arduino UNO-R4
 #endif
 #define NOT_A_TOUCH_PIN 255
 
-typedef void (*fn_callback_ptr_t)(uint16_t[NUM_CTSU_PINS][2]);
+typedef void (*fn_callback_ptr_t)();
 
 typedef enum e_ctsu_ico_gain
 {

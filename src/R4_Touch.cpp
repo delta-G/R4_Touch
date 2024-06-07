@@ -178,7 +178,7 @@ void CTSUFN_handler()
   ctsu_done = true;
   if (ctsu_fn_callback)
   {
-    ctsu_fn_callback(results);
+    ctsu_fn_callback();
   }
   if (free_running)
   {
