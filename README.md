@@ -23,15 +23,17 @@ On both boards the LOVE pin is also supported.  To use the LOVE pin, pass 20 for
 
 The library contains a class called `TouchSensor`.  
 
-The constructor for a `TouchSensor` object takes two arguments.  The first is the pin number to be used and the second is a threshold value for determining a touch.     
+The constructor for a `TouchSensor` object takes no arguments.  
 
-There is a `begin()` function that must be called for each pin in `setup()`.
+There is a `begin(pin, threshold)` function that must be called for each sensor in `setup()` to initialize the sensor.  The arguments are `int pin` which sets the pin to be used, and `uint16_t threshold` which sets the threshold for determining touches.  
 
 The `read()` function returns true if the sensor is touched, otherwise false.  The raw reading from the touch unit will be compared to the threshold value for the sensor to determine if the sensor is touched or not.  Raw values greater than the threshold value indicate a touch.  
 
 The `readRaw()` function will get the raw reading from the unit.  This can be handy to help determine what to use for the threshold if the default values don't work.  
 
-The `read()` and `readRaw()` functions DO NOT trigger a measurement of the sensor.  They are only returning the last read values.  In free-running mode this will always be a recent number since the code is restarting itself.  Otherwise you must use `TouchSensor::start()` or `TouchSensor::startSingle()` to trigger a new measurement.  
+The `readReference()` function will get the raw reading from the reference counter.  This can be needed when tuning sensors. 
+
+The `read()`, `readRaw()`, and `readReference()` functions DO NOT trigger a measurement of the sensor by themselves.  They are only returning the last read values.  In free-running mode this will always be a recent number since the code is restarting itself.  Otherwise you must use `TouchSensor::start()` or `TouchSensor::startSingle()` to trigger a new measurement.  
 
 There are also `setThreshold(uint16_t)` and `getThreshold()` functions for the threshold value if you need to change or access it. 
 
@@ -41,14 +43,16 @@ If you would like to run the unit once then call with an argument of false.  The
 
 There is a static method `TouchSensor::stop()` that will stop the CTSU but retain all settings. 
 
+You can attach a callback function to be called at the end of each measurement cycle with the `attachCallback(callback)` function.  This function must take no arguments and return void.  The function will be called from the CTSU_FN interrupt handler before the next measurement is started.  
+
 
 # Example 
 ```
 #include "R4_Touch.h"
 
   //  Two arguments are pin number and threshold
-  TouchSensor sensor1(2, 19000);
-  TouchSensor sensor2(3, 19000);
+  TouchSensor sensor1();
+  TouchSensor sensor2();
 
 void setup() {
 
@@ -56,8 +60,8 @@ void setup() {
   while(!Serial);
   
   // Call begin for each sensor
-  sensor1.begin();
-  sensor2.begin();
+  sensor1.begin(2, 10000);
+  sensor2.begin(3, 10000);
 
   TouchSensor::start();  // start the unit in free-running mode
   Serial.println("End Setup");
