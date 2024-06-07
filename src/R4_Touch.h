@@ -117,11 +117,14 @@ class TouchSensor
 private:
   uint8_t _pin;
   uint16_t _threshold;
-  TouchSensor();
 
 public:
-  TouchSensor(uint8_t aPin, uint16_t aThresh) : _pin(aPin), _threshold(aThresh) {}
-  void begin() { setTouchMode(_pin); }
+  void begin(int aPin, uint16_t aThresh)
+  {
+    _pin = aPin;
+    _threshold = aThresh;
+    setTouchMode(_pin);
+  }
   bool read() { return (touchRead(_pin) > _threshold); }
   uint16_t readRaw() { return touchRead(_pin); }
   uint16_t readReference() { return getReferenceCount(_pin); }
