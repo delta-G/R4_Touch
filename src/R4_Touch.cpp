@@ -28,7 +28,7 @@ void TouchSensor::begin(int pin, uint16_t threshold){
 }
 bool TouchSensor::read() { return (touchRead(_pin) > _threshold); }
 uint16_t TouchSensor::readRaw() { return touchRead(_pin); }
-uint16_t TouchSensor::readReference() { return getReferenceCount(_pin); }
+uint16_t TouchSensor::readReference() { return touchReadReference(_pin); }
 
 void TouchSensor::setThreshold(uint16_t t) { _threshold = t; }
 uint16_t TouchSensor::getThreshold() { return _threshold; }
@@ -40,7 +40,7 @@ void TouchSensor::setMeasurementCount(uint8_t s) { setTouchPinMeasurementCount(_
 void TouchSensor::setSensorOffset(uint16_t s) { setTouchPinSensorOffset(_pin, s); }
 
 void TouchSensor::start() { startTouchMeasurement(); }
-void TouchSensor::stop() { stopCTSU(); }
+void TouchSensor::stop() { stopTouchMeasurement(); }
 void TouchSensor::startSingle()
 {
     startTouchMeasurement(false);

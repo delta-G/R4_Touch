@@ -91,16 +91,14 @@ struct ctsu_pin_info_t
   uint8_t chac_val;
 };
 
-void setupCTSU();
-void setupDTC();
-void startCTSUmeasure();
-void stopCTSU();
+
+void stopTouchMeasurement();
 
 void startTouchMeasurement(bool fr = true);
 bool touchMeasurementReady();
 void setTouchMode(int);
 uint16_t touchRead(int);
-uint16_t getReferenceCount(int);
+uint16_t touchReadReference(int);
 
 void setTouchPinClockDiv(int, ctsu_clock_div_t);
 void setTouchPinIcoGain(int, ctsu_ico_gain_t);

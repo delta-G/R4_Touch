@@ -148,6 +148,11 @@ transfer_info_t rd_info;
 dtc_extended_cfg_t rd_ext;
 transfer_cfg_t rd_cfg = {&rd_info, &rd_ext};
 
+static void initialize_CTSU();
+static void initialize_DTC();
+
+static void startCTSUmeasure();
+
 // extern bool wr_fired;
 void CTSUWR_handler()
 {
@@ -200,7 +205,7 @@ void startTouchMeasurement(bool fr /*= true*/)
   }
 }
 
-void startCTSUmeasure()
+static void startCTSUmeasure()
 {
   ctsu_done = false;
   R_DTC_Reset(&wr_ctrl, &(regSettings[0][0]), (void *)&(R_CTSU->CTSUSSC), num_configured_sensors);
@@ -208,7 +213,7 @@ void startCTSUmeasure()
   R_CTSU->CTSUCR0 = 1;
 }
 
-void stopCTSU()
+void stopTouchMeasurement()
 {
   R_CTSU->CTSUCR0 = 0x10;
 }
@@ -228,7 +233,7 @@ void setTouchMode(int pin)
     return;
   }
   // stop CTSU if it is running
-  stopCTSU();
+  stopTouchMeasurement();
   // set pin PFS setting
   if (pin == NUM_ARDUINO_PINS - 1)
   {
@@ -240,7 +245,7 @@ void setTouchMode(int pin)
     R_IOPORT_PinCfg(&g_ioport_ctrl, g_pin_cfg[pin].pin, (uint32_t)(IOPORT_CFG_PERIPHERAL_PIN | IOPORT_PERIPHERAL_CTSU));
   }
 
-  setupCTSU();
+  initialize_CTSU();
 
   // add to the list of enabled pins
   R_CTSU->CTSUCHAC[info->chac_idx] |= info->chac_val;
@@ -289,7 +294,7 @@ uint16_t touchRead(int pin)
   return results[pinToDataIndex[pin]][0];
 }
 
-uint16_t getReferenceCount(int pin)
+uint16_t touchReadReference(int pin)
 {
   if (pinToDataIndex[pin] == NOT_A_TOUCH_PIN)
   {
@@ -298,7 +303,7 @@ uint16_t getReferenceCount(int pin)
   return results[pinToDataIndex[pin]][1];
 }
 
-void setupCTSU()
+static void initialize_CTSU()
 {
   static bool inited = false;
   if (!inited)
@@ -363,11 +368,11 @@ void setupCTSU()
     // // enable ELC
     // R_ELC->ELCR = (1 << R_ELC_ELCR_ELCON_Pos);
 
-    setupDTC();
+    initialize_DTC();
   }
 }
 
-void setupDTC()
+static void initialize_DTC()
 {
   /*
       The WR signal requires us to transfer 3 16-bit values from the regSettings array
