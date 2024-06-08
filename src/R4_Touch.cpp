@@ -39,6 +39,7 @@ void TouchSensor::setIcoCurrentAdjust(uint8_t s) { setTouchPinReferenceCurrent(_
 void TouchSensor::setMeasurementCount(uint8_t s) { setTouchPinMeasurementCount(_pin, s); }
 void TouchSensor::setSensorOffset(uint16_t s) { setTouchPinSensorOffset(_pin, s); }
 void TouchSensor::applyPinSettings(ctsu_pin_settings_t s) { applyTouchPinSettings(_pin, s); }
+ctsu_pin_settings_t TouchSensor::getPinSettings() { return getTouchPinSettings(_pin);}
 
 void TouchSensor::start() { startTouchMeasurement(); }
 void TouchSensor::stop() { stopTouchMeasurement(); }

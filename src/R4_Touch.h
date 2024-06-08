@@ -51,6 +51,7 @@ public:
   void setMeasurementCount(uint8_t s);
   void setSensorOffset(uint16_t s);
   void applyPinSettings(ctsu_pin_settings_t);
+  ctsu_pin_settings_t getPinSettings();
 
   static void start();
   static void stop();

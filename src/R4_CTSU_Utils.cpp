@@ -515,6 +515,18 @@ void applyTouchPinSettings(int pin, ctsu_pin_settings_t &settings)
   setTouchPinMeasurementCount(pin, settings.count);
 }
 
+ctsu_pin_settings_t getTouchPinSettings(int pin)
+{
+  ctsu_pin_settings_t ret;
+  int idx = pinToDataIndex[pin];
+  ret.div = static_cast<ctsu_clock_div_t>((regSettings[idx][2] >> 8) & 0x1F);
+  ret.gain = static_cast<ctsu_ico_gain_t>(regSettings[idx][2] >> 13);
+  ret.ref_current = (regSettings[idx][2] & 0xFF);
+  ret.offset = (regSettings[idx][1] & 0x3FF);
+  ret.count = (regSettings[idx][1] >> 10) + 1;
+  return ret;
+}
+
 void attachMeasurementEndCallback(fn_callback_ptr_t cb)
 {
   ctsu_fn_callback = cb;

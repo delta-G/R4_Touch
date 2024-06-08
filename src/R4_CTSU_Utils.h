@@ -114,6 +114,7 @@ void setTouchPinReferenceCurrent(int, uint8_t);
 void setTouchPinMeasurementCount(int, uint8_t);
 void setTouchPinSensorOffset(int, uint16_t);
 void applyTouchPinSettings(int, ctsu_pin_settings_t &);
+ctsu_pin_settings_t getTouchPinSettings(int);
 
 void attachMeasurementEndCallback(fn_callback_ptr_t);
 

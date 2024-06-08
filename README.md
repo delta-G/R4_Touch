@@ -93,6 +93,7 @@ There are several settings that can be made for each individual pin.  Calling an
 
 * `ctsu_pin_settings_t` is a struct with members `div`, `gain`, `ref_current`, `offset`, and `count` that hold each of the settings.
 * `applyPinSettings(ctsu_pin_settings_t&)` applies all of the pin settings at once from a given `ctsu_pin_settings_t` struct. 
+* `getPinSettings()` will return a `ctcu_pin_settings_t` with the settings for this sensor. 
 
 There are functions to adjust individual settings as well.  
 
