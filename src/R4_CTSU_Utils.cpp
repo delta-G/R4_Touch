@@ -216,6 +216,7 @@ static void startCTSUmeasure()
 void stopTouchMeasurement()
 {
   R_CTSU->CTSUCR0 = 0x10;
+  free_running = false;
 }
 
 void setTouchMode(int pin)
