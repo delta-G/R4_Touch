@@ -35,7 +35,7 @@ uint16_t TouchSensor::getThreshold() { return _threshold; }
 
 void TouchSensor::setClockDiv(ctsu_clock_div_t s) { setTouchPinClockDiv(_pin, s); }
 void TouchSensor::setIcoGain(ctsu_ico_gain_t s) { setTouchPinIcoGain(_pin, s); }
-void TouchSensor::setIcoCurrentAdjust(uint8_t s) { setTouchPinReferenceCurrent(_pin, s); }
+void TouchSensor::setReferenceCurrent(uint8_t s) { setTouchPinReferenceCurrent(_pin, s); }
 void TouchSensor::setMeasurementCount(uint8_t s) { setTouchPinMeasurementCount(_pin, s); }
 void TouchSensor::setSensorOffset(uint16_t s) { setTouchPinSensorOffset(_pin, s); }
 void TouchSensor::applyPinSettings(ctsu_pin_settings_t s) { applyTouchPinSettings(_pin, s); }

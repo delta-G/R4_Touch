@@ -47,7 +47,7 @@ public:
 
   void setClockDiv(ctsu_clock_div_t s);
   void setIcoGain(ctsu_ico_gain_t s);
-  void setIcoCurrentAdjust(uint8_t s);
+  void setReferenceCurrent(uint8_t s);
   void setMeasurementCount(uint8_t s);
   void setSensorOffset(uint16_t s);
   void applyPinSettings(ctsu_pin_settings_t);
