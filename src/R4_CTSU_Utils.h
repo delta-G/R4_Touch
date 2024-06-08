@@ -91,6 +91,14 @@ struct ctsu_pin_info_t
   uint8_t chac_val;
 };
 
+struct ctsu_pin_settings_t
+{
+  ctsu_clock_div_t div;
+  ctsu_ico_gain_t gain;
+  uint8_t ref_current;
+  uint16_t offset;
+  uint8_t count;
+};
 
 void stopTouchMeasurement();
 
@@ -102,9 +110,10 @@ uint16_t touchReadReference(int);
 
 void setTouchPinClockDiv(int, ctsu_clock_div_t);
 void setTouchPinIcoGain(int, ctsu_ico_gain_t);
-void setTouchPinIcoCurrentAdjust(int, uint8_t);
+void setTouchPinReferenceCurrent(int, uint8_t);
 void setTouchPinMeasurementCount(int, uint8_t);
 void setTouchPinSensorOffset(int, uint16_t);
+void applyTouchPinSettings(int, ctsu_pin_settings_t &);
 
 void attachMeasurementEndCallback(fn_callback_ptr_t);
 

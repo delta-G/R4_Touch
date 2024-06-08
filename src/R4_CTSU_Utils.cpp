@@ -491,7 +491,7 @@ void setTouchPinIcoGain(int aPin, ctsu_ico_gain_t aGain)
   regSettings[pinToDataIndex[aPin]][2] = (regSettings[pinToDataIndex[aPin]][2] & ~(0x6000)) | ((uint16_t)aGain << 13);
 }
 
-void setTouchPinIcoCurrentAdjust(int aPin, uint8_t aSet)
+void setTouchPinReferenceCurrent(int aPin, uint8_t aSet)
 {
   regSettings[pinToDataIndex[aPin]][2] = (regSettings[pinToDataIndex[aPin]][2] & ~(0x00FF)) | (aSet);
 }
@@ -504,6 +504,15 @@ void setTouchPinMeasurementCount(int aPin, uint8_t aCount)
 void setTouchPinSensorOffset(int aPin, uint16_t aOff)
 {
   regSettings[pinToDataIndex[aPin]][1] = (regSettings[pinToDataIndex[aPin]][1] & ~(0x03FF)) | (aOff);
+}
+
+void applyTouchPinSettings(int pin, ctsu_pin_settings_t &settings)
+{
+  setTouchPinClockDiv(pin, settings.div);
+  setTouchPinIcoGain(pin, settings.gain);
+  setTouchPinReferenceCurrent(pin, settings.ref_current);
+  setTouchPinSensorOffset(pin, settings.offset);
+  setTouchPinMeasurementCount(pin, settings.count);
 }
 
 void attachMeasurementEndCallback(fn_callback_ptr_t cb)

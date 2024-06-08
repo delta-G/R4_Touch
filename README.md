@@ -91,9 +91,14 @@ void loop() {
 
 There are several settings that can be made for each individual pin.  Calling any of these functions while the touch unit is running will cause it to stop.  You must restart the unit by calling `TouchSensor::start()` or `TouchSensor::startSingle()` after changing your settings. 
 
+* `ctsu_pin_settings_t` is a struct with members `div`, `gain`, `ref_current`, `offset`, and `count` that hold each of the settings.
+* `applyPinSettings(ctsu_pin_settings_t&)` applies all of the pin settings at once from a given `ctsu_pin_settings_t` struct. 
+
+There are functions to adjust individual settings as well.  
+
 * `setMeasurementCount(uint8_t)` - sets the number of times the measure pulse will be repeated.  Limited to 1-64
 * `setSensorOffset(uint16_t)` - sets the sensor offset.  Limited to 0-1023.
-* `setIcoCurrentAdjust(uint8_t)` - sets the current adjustment for the ICO.  Limited to 0-255.
+* `setTouchPinReferenceCurrent(uint8_t)` - sets the current adjustment for the ICO.  Limited to 0-255.
 * `setIcoGain(ctsu_ico_gain_t)` - set ico gain percent.  Choose from CTSU_ICO_GAIN_100, CTSU_ICO_GAIN_66, CTSU_ICO_GAIN_50, or CTSU_ICO_GAIN_40.
 * `setClockDiv(ctsu_clock_div_t)` - set the clock divider.  The CTSU uses PCLCKB which is set to system clock / 2.
 

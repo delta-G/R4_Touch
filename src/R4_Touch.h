@@ -50,6 +50,7 @@ public:
   void setIcoCurrentAdjust(uint8_t s);
   void setMeasurementCount(uint8_t s);
   void setSensorOffset(uint16_t s);
+  void applyPinSettings(ctsu_pin_settings_t);
 
   static void start();
   static void stop();
