@@ -1,4 +1,3 @@
-#include "R4_Touch.h"
 /*
 
 R4_CTSU.cpp  --  Capacitive Touch Sensing for Arduino UNO-R4
@@ -56,6 +55,8 @@ Going to 3 happens when we write SO1.  That happens by the DTC.
 It goes back to 1 automatically until it ends
 
 */
+
+#include "R4_Touch.h"
 
 // CTSU is running off PCLKB at full speed.
 //  PCLKB is running off system clock / 2
