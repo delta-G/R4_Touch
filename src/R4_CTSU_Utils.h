@@ -104,17 +104,17 @@ void stopTouchMeasurement();
 
 void startTouchMeasurement(bool fr = true);
 bool touchMeasurementReady();
-void setTouchMode(int);
-uint16_t touchRead(int);
-uint16_t touchReadReference(int);
+void setTouchMode(const int);
+uint16_t touchRead(const int);
+uint16_t touchReadReference(const int);
 
-void setTouchPinClockDiv(int, ctsu_clock_div_t);
-void setTouchPinIcoGain(int, ctsu_ico_gain_t);
-void setTouchPinReferenceCurrent(int, uint8_t);
-void setTouchPinMeasurementCount(int, uint8_t);
-void setTouchPinSensorOffset(int, uint16_t);
-void applyTouchPinSettings(int, ctsu_pin_settings_t &);
-ctsu_pin_settings_t getTouchPinSettings(int);
+void setTouchPinClockDiv(const int, const ctsu_clock_div_t);
+void setTouchPinIcoGain(const int, const ctsu_ico_gain_t);
+void setTouchPinReferenceCurrent(const int, const uint8_t);
+void setTouchPinMeasurementCount(const int, const uint8_t);
+void setTouchPinSensorOffset(const int, const uint16_t);
+void applyTouchPinSettings(const int, const ctsu_pin_settings_t &);
+ctsu_pin_settings_t getTouchPinSettings(const int);
 
 void attachMeasurementEndCallback(fn_callback_ptr_t);
 

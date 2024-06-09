@@ -37,20 +37,20 @@ private:
   uint16_t _threshold;
 
 public:
-  void begin(int aPin, uint16_t aThresh);
+  void begin(const int aPin, const uint16_t aThresh);
   bool read();
   uint16_t readRaw();
   uint16_t readReference();
 
-  void setThreshold(uint16_t t);
+  void setThreshold(const uint16_t t);
   uint16_t getThreshold();
 
-  void setClockDiv(ctsu_clock_div_t s);
-  void setIcoGain(ctsu_ico_gain_t s);
-  void setReferenceCurrent(uint8_t s);
-  void setMeasurementCount(uint8_t s);
-  void setSensorOffset(uint16_t s);
-  void applyPinSettings(ctsu_pin_settings_t);
+  void setClockDiv(const ctsu_clock_div_t s);
+  void setIcoGain(const ctsu_ico_gain_t s);
+  void setReferenceCurrent(const uint8_t s);
+  void setMeasurementCount(const uint8_t s);
+  void setSensorOffset(const uint16_t s);
+  void applyPinSettings(const ctsu_pin_settings_t);
   ctsu_pin_settings_t getPinSettings();
 
   static void start();

@@ -20,7 +20,7 @@ R4_Touch.cpp  --  Capacitive Touch Sensing for Arduino UNO-R4
 
 #include "R4_Touch.h"
 
-void TouchSensor::begin(int pin, uint16_t threshold)
+void TouchSensor::begin(const int pin, const uint16_t threshold)
 {
     _pin = pin;
     _threshold = threshold;
@@ -30,15 +30,15 @@ bool TouchSensor::read() { return (touchRead(_pin) > _threshold); }
 uint16_t TouchSensor::readRaw() { return touchRead(_pin); }
 uint16_t TouchSensor::readReference() { return touchReadReference(_pin); }
 
-void TouchSensor::setThreshold(uint16_t t) { _threshold = t; }
+void TouchSensor::setThreshold(const uint16_t t) { _threshold = t; }
 uint16_t TouchSensor::getThreshold() { return _threshold; }
 
-void TouchSensor::setClockDiv(ctsu_clock_div_t s) { setTouchPinClockDiv(_pin, s); }
-void TouchSensor::setIcoGain(ctsu_ico_gain_t s) { setTouchPinIcoGain(_pin, s); }
-void TouchSensor::setReferenceCurrent(uint8_t s) { setTouchPinReferenceCurrent(_pin, s); }
-void TouchSensor::setMeasurementCount(uint8_t s) { setTouchPinMeasurementCount(_pin, s); }
-void TouchSensor::setSensorOffset(uint16_t s) { setTouchPinSensorOffset(_pin, s); }
-void TouchSensor::applyPinSettings(ctsu_pin_settings_t s) { applyTouchPinSettings(_pin, s); }
+void TouchSensor::setClockDiv(const ctsu_clock_div_t s) { setTouchPinClockDiv(_pin, s); }
+void TouchSensor::setIcoGain(const ctsu_ico_gain_t s) { setTouchPinIcoGain(_pin, s); }
+void TouchSensor::setReferenceCurrent(const uint8_t s) { setTouchPinReferenceCurrent(_pin, s); }
+void TouchSensor::setMeasurementCount(const uint8_t s) { setTouchPinMeasurementCount(_pin, s); }
+void TouchSensor::setSensorOffset(const uint16_t s) { setTouchPinSensorOffset(_pin, s); }
+void TouchSensor::applyPinSettings(const ctsu_pin_settings_t s) { applyTouchPinSettings(_pin, s); }
 ctsu_pin_settings_t TouchSensor::getPinSettings() { return getTouchPinSettings(_pin);}
 
 void TouchSensor::start() { startTouchMeasurement(); }
