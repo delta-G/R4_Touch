@@ -20,7 +20,7 @@ R4_Touch.cpp  --  Capacitive Touch Sensing for Arduino UNO-R4
 
 #include "R4_Touch.h"
 
-void TouchSensor::begin(const int pin, const uint16_t threshold)
+void TouchSensor::begin(const uint8_t pin, const uint16_t threshold)
 {
     _pin = pin;
     _threshold = threshold;

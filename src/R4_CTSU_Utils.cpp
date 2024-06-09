@@ -219,7 +219,7 @@ void stopTouchMeasurement()
   free_running = false;
 }
 
-void setTouchMode(const int pin)
+void setTouchMode(const uint8_t pin)
 {
   // find the pin info:
   const ctsu_pin_info_t *info = &(g_ctsu_pin_info[pin]);
@@ -286,7 +286,7 @@ void setTouchMode(const int pin)
   num_configured_sensors++;
 }
 
-uint16_t touchRead(const int pin)
+uint16_t touchRead(const uint8_t pin)
 {
   if (pinToDataIndex[pin] == NOT_A_TOUCH_PIN)
   {
@@ -295,7 +295,7 @@ uint16_t touchRead(const int pin)
   return results[pinToDataIndex[pin]][0];
 }
 
-uint16_t touchReadReference(const int pin)
+uint16_t touchReadReference(const uint8_t pin)
 {
   if (pinToDataIndex[pin] == NOT_A_TOUCH_PIN)
   {
@@ -436,7 +436,7 @@ static void initialize_DTC()
   R_DTC_Enable(&rd_ctrl);
 }
 
-void setTouchPinClockDiv(const int aPin, const ctsu_clock_div_t aDiv)
+void setTouchPinClockDiv(const uint8_t aPin, const ctsu_clock_div_t aDiv)
 {
   // calculate CTSUSSC settings from clock div
   uint16_t ssc = 0;
@@ -487,27 +487,27 @@ void setTouchPinClockDiv(const int aPin, const ctsu_clock_div_t aDiv)
   regSettings[pinToDataIndex[aPin]][2] = (regSettings[pinToDataIndex[aPin]][2] & ~(0x1F00)) | ((uint16_t)aDiv << 8);
 }
 
-void setTouchPinIcoGain(const int aPin, const ctsu_ico_gain_t aGain)
+void setTouchPinIcoGain(const uint8_t aPin, const ctsu_ico_gain_t aGain)
 {
   regSettings[pinToDataIndex[aPin]][2] = (regSettings[pinToDataIndex[aPin]][2] & ~(0x6000)) | ((uint16_t)aGain << 13);
 }
 
-void setTouchPinReferenceCurrent(const int aPin, const uint8_t aSet)
+void setTouchPinReferenceCurrent(const uint8_t aPin, const uint8_t aSet)
 {
   regSettings[pinToDataIndex[aPin]][2] = (regSettings[pinToDataIndex[aPin]][2] & ~(0x00FF)) | (aSet);
 }
 
-void setTouchPinMeasurementCount(const int aPin, const uint8_t aCount)
+void setTouchPinMeasurementCount(const uint8_t aPin, const uint8_t aCount)
 {
   regSettings[pinToDataIndex[aPin]][1] = (regSettings[pinToDataIndex[aPin]][1] & ~(0xFC00)) | (((uint16_t)aCount - 1) << 10);
 }
 
-void setTouchPinSensorOffset(const int aPin, const uint16_t aOff)
+void setTouchPinSensorOffset(const uint8_t aPin, const uint16_t aOff)
 {
   regSettings[pinToDataIndex[aPin]][1] = (regSettings[pinToDataIndex[aPin]][1] & ~(0x03FF)) | (aOff);
 }
 
-void applyTouchPinSettings(const int pin, const ctsu_pin_settings_t &settings)
+void applyTouchPinSettings(const uint8_t pin, const ctsu_pin_settings_t &settings)
 {
   setTouchPinClockDiv(pin, settings.div);
   setTouchPinIcoGain(pin, settings.gain);
@@ -516,7 +516,7 @@ void applyTouchPinSettings(const int pin, const ctsu_pin_settings_t &settings)
   setTouchPinMeasurementCount(pin, settings.count);
 }
 
-ctsu_pin_settings_t getTouchPinSettings(const int pin)
+ctsu_pin_settings_t getTouchPinSettings(const uint8_t pin)
 {
   ctsu_pin_settings_t ret;
   int idx = pinToDataIndex[pin];

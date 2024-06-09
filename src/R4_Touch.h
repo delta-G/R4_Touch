@@ -37,7 +37,7 @@ private:
   uint16_t _threshold;
 
 public:
-  void begin(const int aPin, const uint16_t aThresh);
+  void begin(const uint8_t aPin, const uint16_t aThresh);
   bool read();
   uint16_t readRaw();
   uint16_t readReference();
