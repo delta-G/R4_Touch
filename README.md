@@ -46,44 +46,9 @@ There is a static method `TouchSensor::stop()` that will stop the CTSU but retai
 You can attach a callback function to be called at the end of each measurement cycle with the `attachCallback(callback)` function.  This function must take no arguments and return void.  The function will be called from the CTSU_FN interrupt handler before the next measurement is started.  
 
 
-# Example 
-```
-#include "R4_Touch.h"
+# Example2
 
-  //  Two arguments are pin number and threshold
-  TouchSensor sensor1();
-  TouchSensor sensor2();
-
-void setup() {
-
-  Serial.begin(115200);
-  while(!Serial);
-  
-  // Call begin for each sensor
-  sensor1.begin(2, 10000);
-  sensor2.begin(3, 10000);
-
-  TouchSensor::start();  // start the unit in free-running mode
-  Serial.println("End Setup");
-
-}
-
-void loop() {
-
-  static int count = 0;
-
-  Serial.println();
-  Serial.print("-- -");
-  Serial.print(count++);
-  Serial.print("  ");
-  Serial.print(sensor1.read()); 
-  Serial.print("   ");
-  Serial.print(sensor2.read());
-
-  delay(500);
-
-}
-```
+There is a simple example included that shows how to get started with a single sensor.  More examples are coming soon. 
 
 <br><br>
 
