@@ -25,7 +25,7 @@ The library contains a class called `TouchSensor`.
 
 The constructor for a `TouchSensor` object takes no arguments.  
 
-There is a `begin(const  int pin, const uint16_t threshold)` function that must be called for each sensor in `setup()` to initialize the sensor.  The arguments are `int pin` which sets the pin to be used, and `uint16_t threshold` which sets the threshold for determining touches.  
+There is a `begin(const uint8_t pin, const uint16_t threshold)` function that must be called for each sensor in `setup()` to initialize the sensor.  The arguments are `pin` which sets the pin to be used, and `threshold` which sets the threshold for determining touches.  
 
 The `read()` function returns true if the sensor is touched, otherwise false.  The raw reading from the touch unit will be compared to the threshold value for the sensor to determine if the sensor is touched or not.  Raw values greater than the threshold value indicate a touch.  
 
@@ -91,7 +91,13 @@ void loop() {
 
 There are several settings that can be made for each individual pin.  Calling any of these functions while the touch unit is running will cause it to stop.  You must restart the unit by calling `TouchSensor::start()` or `TouchSensor::startSingle()` after changing your settings. 
 
-* `ctsu_pin_settings_t` is a struct with members `div`, `gain`, `ref_current`, `offset`, and `count` that hold each of the settings.
+* `ctsu_pin_settings_t` is a struct to hold settings together.  The members are:
+  - `ctsu_clock_div_t div`
+  - `ctsu_ico_gain_t gain`
+  - `uint8_t ref_current`
+  - `uint16_t offset`
+  - `uint8_t count` 
+
 * `applyPinSettings(ctsu_pin_settings_t&)` applies all of the pin settings at once from a given `ctsu_pin_settings_t` struct. 
 * `getPinSettings()` will return a `ctcu_pin_settings_t` with the settings for this sensor. 
 
@@ -100,39 +106,41 @@ There are functions to adjust individual settings as well.
 * `setMeasurementCount(const uint8_t)` - sets the number of times the measure pulse will be repeated.  Limited to 1-64
 * `setSensorOffset(const uint16_t)` - sets the sensor offset.  Limited to 0-1023.
 * `setReferenceCurrent(const uint8_t)` - sets the current adjustment for the ICO.  Limited to 0-255.
-* `setIcoGain(const ctsu_ico_gain_t)` - set ico gain percent.  Choose from CTSU_ICO_GAIN_100, CTSU_ICO_GAIN_66, CTSU_ICO_GAIN_50, or CTSU_ICO_GAIN_40.
-* `setClockDiv(const ctsu_clock_div_t)` - set the clock divider.  The CTSU uses PCLCKB which is set to system clock / 2.
-
-Settings for the clock divider are:
-  CTSU_CLOCK_DIV_2,
-  CTSU_CLOCK_DIV_4,
-  CTSU_CLOCK_DIV_6,
-  CTSU_CLOCK_DIV_8,
-  CTSU_CLOCK_DIV_10,
-  CTSU_CLOCK_DIV_12,
-  CTSU_CLOCK_DIV_14,
-  CTSU_CLOCK_DIV_16,
-  CTSU_CLOCK_DIV_18,
-  CTSU_CLOCK_DIV_20,
-  CTSU_CLOCK_DIV_22,
-  CTSU_CLOCK_DIV_24,
-  CTSU_CLOCK_DIV_26,
-  CTSU_CLOCK_DIV_28,
-  CTSU_CLOCK_DIV_30,
-  CTSU_CLOCK_DIV_32,
-  CTSU_CLOCK_DIV_34,
-  CTSU_CLOCK_DIV_36,
-  CTSU_CLOCK_DIV_38,
-  CTSU_CLOCK_DIV_40,
-  CTSU_CLOCK_DIV_42,
-  CTSU_CLOCK_DIV_44,
-  CTSU_CLOCK_DIV_46,
-  CTSU_CLOCK_DIV_48,
-  CTSU_CLOCK_DIV_50,
-  CTSU_CLOCK_DIV_52,
-  CTSU_CLOCK_DIV_54,
-  CTSU_CLOCK_DIV_56,
-  CTSU_CLOCK_DIV_58,
-  CTSU_CLOCK_DIV_60,
-  CTSU_CLOCK_DIV_62,
-  CTSU_CLOCK_DIV_64
+* `setIcoGain(const ctsu_ico_gain_t)` - set ico gain percent.  Choose from 
+  - CTSU_ICO_GAIN_100
+  - CTSU_ICO_GAIN_66
+  - CTSU_ICO_GAIN_50
+  - CTSU_ICO_GAIN_40.
+* `setClockDiv(const ctsu_clock_div_t)` - set the clock divider.  The CTSU uses PCLCKB which is set to system clock / 2.  Coose from:
+  - CTSU_CLOCK_DIV_2,
+  - CTSU_CLOCK_DIV_4,
+  - CTSU_CLOCK_DIV_6,
+  - CTSU_CLOCK_DIV_8,
+  - CTSU_CLOCK_DIV_10,
+  - CTSU_CLOCK_DIV_12,
+  - CTSU_CLOCK_DIV_14,
+  - CTSU_CLOCK_DIV_16,
+  - CTSU_CLOCK_DIV_18,
+  - CTSU_CLOCK_DIV_20,
+  - CTSU_CLOCK_DIV_22,
+  - CTSU_CLOCK_DIV_24,
+  - CTSU_CLOCK_DIV_26,
+  - CTSU_CLOCK_DIV_28,
+  - CTSU_CLOCK_DIV_30,
+  - CTSU_CLOCK_DIV_32,
+  - CTSU_CLOCK_DIV_34,
+  - CTSU_CLOCK_DIV_36,
+  - CTSU_CLOCK_DIV_38,
+  - CTSU_CLOCK_DIV_40,
+  - CTSU_CLOCK_DIV_42,
+  - CTSU_CLOCK_DIV_44,
+  - CTSU_CLOCK_DIV_46,
+  - CTSU_CLOCK_DIV_48,
+  - CTSU_CLOCK_DIV_50,
+  - CTSU_CLOCK_DIV_52,
+  - CTSU_CLOCK_DIV_54,
+  - CTSU_CLOCK_DIV_56,
+  - CTSU_CLOCK_DIV_58,
+  - CTSU_CLOCK_DIV_60,
+  - CTSU_CLOCK_DIV_62,
+  - CTSU_CLOCK_DIV_64
