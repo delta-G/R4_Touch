@@ -1,10 +1,8 @@
-
-
 #include "R4_Touch.h"
 /*
 
 R4_CTSU.cpp  --  Capacitive Touch Sensing for Arduino UNO-R4
-     Copyright (C) 2023  David C.
+     Copyright (C) 2024  David C.
 
      This program is free software: you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published by

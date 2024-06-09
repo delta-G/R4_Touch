@@ -1,7 +1,7 @@
 /*
 
 R4_Touch.cpp  --  Capacitive Touch Sensing for Arduino UNO-R4
-     Copyright (C) 2023  David C.
+     Copyright (C) 2024  David C.
 
      This program is free software: you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ void TouchSensor::setReferenceCurrent(const uint8_t s) { setTouchPinReferenceCur
 void TouchSensor::setMeasurementCount(const uint8_t s) { setTouchPinMeasurementCount(_pin, s); }
 void TouchSensor::setSensorOffset(const uint16_t s) { setTouchPinSensorOffset(_pin, s); }
 void TouchSensor::applyPinSettings(const ctsu_pin_settings_t s) { applyTouchPinSettings(_pin, s); }
-ctsu_pin_settings_t TouchSensor::getPinSettings() { return getTouchPinSettings(_pin);}
+ctsu_pin_settings_t TouchSensor::getPinSettings() { return getTouchPinSettings(_pin); }
 
 void TouchSensor::start() { startTouchMeasurement(); }
 void TouchSensor::stop() { stopTouchMeasurement(); }
