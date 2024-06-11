@@ -48,7 +48,8 @@ You can attach a callback function to be called at the end of each measurement c
 
 # Example2
 
-There is a simple example included that shows how to get started with a single sensor.  More examples are coming soon. 
+There is a simple example included that shows how to get started with a single sensor.
+There is also an example called Auto_Tune.  This example will help you find the settings for your sensor.  Just load the sketch onto your board and connect the sensor to a touch capable pin.  When the sketch starts, just follow the directions on the screen and send your responses with the serial monitor.
 
 <br><br>
 
