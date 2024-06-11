@@ -46,9 +46,9 @@ There is a static method `TouchSensor::stop()` that will stop the CTSU but retai
 You can attach a callback function to be called at the end of each measurement cycle with the `attachCallback(callback)` function.  This function must take no arguments and return void.  The function will be called from the CTSU_FN interrupt handler before the next measurement is started.  
 
 
-# Example2
+# Examples
 
-There is a simple example included that shows how to get started with a single sensor.
+There is a simple example included that shows how to get started with a single sensor.<br>
 There is also an example called Auto_Tune.  This example will help you find the settings for your sensor.  Just load the sketch onto your board and connect the sensor to a touch capable pin.  When the sketch starts, just follow the directions on the screen and send your responses with the serial monitor.
 
 <br><br>
