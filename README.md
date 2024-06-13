@@ -110,3 +110,9 @@ There are functions to adjust individual settings as well.
   - CTSU_CLOCK_DIV_60,
   - CTSU_CLOCK_DIV_62,
   - CTSU_CLOCK_DIV_64
+ 
+
+# Changes - 
+v1.1 - #1 - add Auto_Tune.ino to examples
+     - #2 - begin function returns bool (false for bad pin number or touch pin already in use)
+     
