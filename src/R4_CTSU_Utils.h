@@ -104,7 +104,7 @@ void stopTouchMeasurement();
 
 void startTouchMeasurement(bool fr = true);
 bool touchMeasurementReady();
-void setTouchMode(const uint8_t);
+bool setTouchMode(const uint8_t);
 uint16_t touchRead(const uint8_t);
 uint16_t touchReadReference(const uint8_t);
 

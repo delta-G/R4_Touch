@@ -218,19 +218,19 @@ void stopTouchMeasurement()
   free_running = false;
 }
 
-void setTouchMode(const uint8_t pin)
+bool setTouchMode(const uint8_t pin)
 {
   // find the pin info:
   const ctsu_pin_info_t *info = &(g_ctsu_pin_info[pin]);
   if (info->ts_num == NOT_A_TOUCH_PIN)
   {
     // pin is not supported
-    return;
+    return false;
   }
   if (pinToDataIndex[pin] != NOT_A_TOUCH_PIN)
   {
     // pin is already configured.
-    return;
+    return false;
   }
   // stop CTSU if it is running
   stopTouchMeasurement();
@@ -283,6 +283,7 @@ void setTouchMode(const uint8_t pin)
   regSettings[di][2] = 0x0F00;
   pinToDataIndex[pin] = di;
   num_configured_sensors++;
+  return true;
 }
 
 uint16_t touchRead(const uint8_t pin)

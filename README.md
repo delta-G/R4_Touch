@@ -25,7 +25,7 @@ The library contains a class called `TouchSensor`.
 
 The constructor for a `TouchSensor` object takes no arguments.  
 
-There is a `begin(const uint8_t pin, const uint16_t threshold)` function that must be called for each sensor in `setup()` to initialize the sensor.  The arguments are `pin` which sets the pin to be used, and `threshold` which sets the threshold for determining touches.  
+There is a `begin(const uint8_t pin, const uint16_t threshold)` function that must be called for each sensor in `setup()` to initialize the sensor.  The arguments are `pin` which sets the pin to be used, and `threshold` which sets the threshold for determining touches.  The `begin` function returns a boolean value, true if the pin supports touch sensing and isn't already in use by the touch unit and false otherwise.  
 
 The `read()` function returns true if the sensor is touched, otherwise false.  The raw reading from the touch unit will be compared to the threshold value for the sensor to determine if the sensor is touched or not.  Raw values greater than the threshold value indicate a touch.  
 
